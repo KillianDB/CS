@@ -1,49 +1,62 @@
 package com.estudante;
 
+import com.estudante.entidade.Estudante;
+import com.estudante.repository.EstudanteRepository;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@RestController("/estudante")
+@RestController
+@RequestMapping("/estudante")
+@CrossOrigin(origins = "*")
 public class EstudanteController {
-    ArrayList<Estudante> estudantes;
-    public EstudanteController() {
-         estudantes = new ArrayList<>();
-    };
+
+    @Autowired
+    private EstudanteRepository estudanteRepository;
 
     @GetMapping("/matricula/{matricula}")
-    public ResponseEntity<Estudante> getEstudante(@PathVariable("matricula") String matricula) {
-        Estudante resp = estudantes.stream()
-                .filter(estudante -> estudante.getId().equals(matricula))
-                .findFirst()
-                .orElse(null);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(resp);
-    };
+    public ResponseEntity<Estudante> buscarPorMatricula(@PathVariable String matricula) {
+        Optional<Estudante> estudante = estudanteRepository.findByMatricula(matricula);
+        return estudante.map(ResponseEntity::ok)
+                       .orElse(ResponseEntity.notFound().build());
+    }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Estudante>> getEstudanteByName(@PathVariable("nome") String nome) {
-        List<Estudante> resp = estudantes.stream()
-                .filter(estudante -> estudante.getName().contains(nome))
-                .toList();
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(resp);
+    public ResponseEntity<List<Estudante>> buscarPorNome(@PathVariable String nome) {
+        List<Estudante> estudantes = estudanteRepository.findByNomeContainingIgnoreCase(nome);
+        return ResponseEntity.ok(estudantes);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Estudante> createEstudante(@RequestBody Estudante estudante) {
-        estudantes.add(estudante);
+    @PostMapping
+    public ResponseEntity<?> criarEstudante(@Valid @RequestBody Estudante estudante) {
+        try {
+            if (estudante.getMatricula() != null && 
+                estudanteRepository.existsByMatricula(estudante.getMatricula())) {
+                return ResponseEntity.badRequest()
+                    .body("Já existe um estudante com a matrícula: " + estudante.getMatricula());
+            }
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .build();
+            if (estudante.getEmail() != null && 
+                estudanteRepository.existsByEmail(estudante.getEmail())) {
+                return ResponseEntity.badRequest()
+                    .body("Já existe um estudante com o email: " + estudante.getEmail());
+            }
+
+            Estudante estudanteSalvo = estudanteRepository.save(estudante);
+            return ResponseEntity.status(HttpStatus.CREATED).body(estudanteSalvo);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body("Erro ao criar estudante: " + e.getMessage());
+        }
     }
 
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("Estudante Service is running on port 8082");
+    }
 }

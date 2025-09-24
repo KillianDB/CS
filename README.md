@@ -56,6 +56,109 @@ docker build -t estudante-service .
 docker run -p 8082:8082 estudante-service
 ```
 
+## **APIs Disponíveis**
+
+### Disciplina Service (porta 8081)
+
+*Base URL:* `http://localhost:8081/disciplina`
+
+- `GET /disciplina/codigo/{codigo}` - Buscar disciplina por código
+- `POST /disciplina` - Criar nova disciplina
+- `POST /disciplina/codigo/{codigo}/estudantes/{estudanteId}` - Adicionar estudante à disciplina
+- `GET /disciplina/nome/{nome}` - Buscar disciplinas por nome
+- `GET /disciplina/codigo/{codigo}/horario` - Buscar horário da disciplina por código
+- `GET /disciplina/health` - Health check
+
+### Estudante Service (porta 8082)
+
+*Base URL:* `http://localhost:8082/estudante`
+
+- `GET /estudante/matricula/{matricula}` - Buscar estudante por matrícula
+- `GET /estudante/nome/{nome}` - Buscar estudantes por nome
+- `POST /estudante` - Criar novo estudante
+- `GET /estudante/health` - Health check
+
+## Console H2
+
+Para acessar o console do banco H2 para debugging:
+
+- *Disciplina Service:* http://localhost:8081/h2-console
+- *Estudante Service:* http://localhost:8082/h2-console
+
+*Configurações de conexão:*
+- JDBC URL: `jdbc:h2:mem:disciplina_db` (ou `estudante_db`)
+- Username: `sa`
+- Password: (deixar em branco)
+
+## Exemplos de uso
+
+### Criar uma disciplina
+```bash
+curl -X POST http://localhost:8081/disciplina \
+  -H "Content-Type: application/json" \
+  -d '{
+    "codigo": "CS101",
+    "nome": "Introdução à Computação",
+    "horario": "2NP-4NP"
+  }'
+```
+
+### Criar um estudante
+```bash
+curl -X POST http://localhost:8082/estudante \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "João Silva",
+    "matricula": "20230001",
+    "email": "joao.silva@edu.pucrs.br"
+  }'
+```
+
+### Adicionar estudante a uma disciplina
+```bash
+curl -X POST http://localhost:8081/disciplinas/CS101/estudante/1
+```
+
+## Arquitetura
+
+```
+┌─────────────────────┐    ┌─────────────────────┐
+│  Disciplina Service │    │  Estudante Service  │
+│     (Port 8081)     │    │     (Port 8082)     │
+├─────────────────────┤    ├─────────────────────┤
+│  REST Controller    │    │  REST Controller    │
+│  Service Layer      │    │  Service Layer      │
+│  Repository (JPA)   │    │  Repository (JPA)   │
+│  H2 Database        │    │  H2 Database        │
+└─────────────────────┘    └─────────────────────┘
+```
+
+## Estrutura do Projeto
+
+```
+CS/
+├── disciplina/
+│   ├── src/main/java/com/disciplina/
+│   │   ├── DisciplinaApplication.java
+│   │   ├── DisciplinaController.java
+│   │   ├── entidade/Disciplina.java
+│   │   └── repository/DisciplinaRepository.java
+│   ├── src/main/resources/application.properties
+│   ├── Dockerfile
+│   └── pom.xml
+├── estudante/
+│   ├── src/main/java/com/estudante/
+│   │   ├── EstudanteApplication.java
+│   │   ├── EstudanteController.java
+│   │   ├── entidade/Estudante.java
+│   │   └── repository/EstudanteRepository.java
+│   ├── src/main/resources/application.properties
+│   ├── Dockerfile
+│   └── pom.xml
+├── docker-compose.yml
+└── README.md
+```
+
 ## Resolução de problemas comuns
 
 1. *Porta já em uso:*

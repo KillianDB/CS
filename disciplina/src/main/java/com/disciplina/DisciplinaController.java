@@ -1,37 +1,82 @@
 package com.disciplina;
 
-import CS.disciplina.Entidade.Disciplina;
-import lombok.AllArgsConstructor;
+import com.disciplina.entidade.Disciplina;
+import com.disciplina.repository.DisciplinaRepository;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
-@AllArgsConstructor
+@RequestMapping("/disciplina")
+@CrossOrigin(origins = "*")
 public class DisciplinaController {
 
-    public ArrayList<Disciplina> disciplinas;
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
 
-    public DisciplinaController() {
-        disciplinas = new ArrayList<>();
-        disciplinas.add(new Disciplina("CD", "Construção de Software", "CD", null));
-        disciplinas.add(new Disciplina("JK", "Probability and Statiscs", "JK", null));
-        disciplinas.add(new Disciplina("EF", "Infraestrutura para gestão de dados", "EF", null));
-        disciplinas.add(new Disciplina("LM", "Matemática aplicada em geofísica", "LM", null));
-        disciplinas.add(new Disciplina("NP", "Fundamentos de processamento paralelo e distribuído", "NP", null));
-
+    @GetMapping("/codigo/{codigo}")
+    public ResponseEntity<Disciplina> buscarPorCodigo(@PathVariable String codigo) {
+        Optional<Disciplina> disciplina = disciplinaRepository.findById(codigo);
+        return disciplina.map(ResponseEntity::ok)
+                         .orElse(ResponseEntity.notFound().build());
     }
-    @PostMapping("/cadEstudante")
-    public void cadEstudante(@RequestParam String estudante, @RequestParam String disciplina ) {
-        for (Disciplina disciplina1 : disciplinas) {
-            if (disciplina1.equals(disciplina))
-        disciplinas.add(disciplina1);
+
+    @PostMapping
+    public ResponseEntity<?> criarDisciplina(@Valid @RequestBody Disciplina disciplina) {
+        try {
+            if (disciplinaRepository.existsByCodigo(disciplina.getCodigo())) {
+                return ResponseEntity.badRequest()
+                    .body("Já existe uma disciplina com o código: " + disciplina.getCodigo());
+            }
+
+            Disciplina disciplinaSalva = disciplinaRepository.save(disciplina);
+            return ResponseEntity.status(HttpStatus.CREATED).body(disciplinaSalva);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body("Erro ao criar disciplina: " + e.getMessage());
         }
     }
 
-    @GetMapping("/disciplinas")
-    public ArrayList<Disciplina> getDisciplinas() {return getDisciplinas();}
+    @PostMapping("/codigo/{codigo}/estudantes/{estudanteId}")
+    public ResponseEntity<?> adicionarEstudante(@PathVariable String codigo, 
+                                              @PathVariable String estudanteId) {
+        try {
+            Optional<Disciplina> disciplinaOpt = disciplinaRepository.findById(codigo);
+            
+            if (disciplinaOpt.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
 
-    @GetMapping("/horaDisciplina")
-    public ArrayList<Disciplina> getHoraDisciplina() {return getHoraDisciplina();}
+            Disciplina disciplina = disciplinaOpt.get();
+            disciplina.adicionaEstudante(estudanteId);
+            disciplinaRepository.save(disciplina);
+            
+            return ResponseEntity.ok().body("Estudante adicionado à disciplina com sucesso");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body("Erro ao adicionar estudante: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<List<Disciplina>> buscarPorNome(@PathVariable String nome) {
+        List<Disciplina> disciplinas = disciplinaRepository.findByNomeContainingIgnoreCase(nome);
+        return ResponseEntity.ok(disciplinas);
+    }
+
+    @GetMapping("/codigo/{codigo}/horario")
+    public ResponseEntity<String> buscarHorarioDaDisciplina(@PathVariable String codigo) {
+        String horario = disciplinaRepository.findHorarioByCodigo(codigo);
+        return ResponseEntity.ok(horario);
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("Disciplina Service is running on port 8081");
+    }
 }
