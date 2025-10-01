@@ -10,9 +10,11 @@ Ambos os microsserviços utilizam:
 - Spring Data JPA
 - Banco de dados H2 (em memória)
 - Docker para containerização
-
+  
+<div display="flex" flex-direction="column">
 Modelagem lógica BD
 <img width="264" height="448" alt="image" src="https://github.com/user-attachments/assets/7d2a2753-3924-4f99-9583-beacd52a9a99" />
+</div>
 
 
 ## Como executar
