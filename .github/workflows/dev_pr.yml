@@ -1,4 +1,4 @@
-name: DEV PR Pipeline
+name: Tests Pipeline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - feature/**
 
   pull_request:
-    branches: [ dev ]
+    branches: [ dev, main ]
     types: [ opened, synchronized ]
   
 permissions:
