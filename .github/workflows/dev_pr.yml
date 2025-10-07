@@ -9,8 +9,8 @@ on:
     branches: [ dev ]
     types: [ opened, synchronized ]
   
-  permissions:
-    content: write
+permissions:
+  content: write
 
 jobs:
   build-and-test:
