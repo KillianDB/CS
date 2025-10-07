@@ -143,26 +143,65 @@ curl -X POST http://localhost:8081/disciplinas/CS101/estudante/1
 
 ```
 CS/
-├── disciplina/
-│   ├── src/main/java/com/disciplina/
-│   │   ├── DisciplinaApplication.java
-│   │   ├── DisciplinaController.java
-│   │   ├── entidade/Disciplina.java
-│   │   └── repository/DisciplinaRepository.java
-│   ├── src/main/resources/application.properties
+├── .github
+│   └── workflows
+|       └── dev_pr.yml
+├── disciplina
 │   ├── Dockerfile
-│   └── pom.xml
-├── estudante/
-│   ├── src/main/java/com/estudante/
-│   │   ├── EstudanteApplication.java
-│   │   ├── EstudanteController.java
-│   │   ├── entidade/Estudante.java
-│   │   └── repository/EstudanteRepository.java
-│   ├── src/main/resources/application.properties
+│   ├── pom.xml
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── com
+│   │   │   │       └── disciplina
+│   │   │   │           ├── DisciplinaApplication.java
+│   │   │   │           ├── DisciplinaController.java
+│   │   │   │           ├── entidade
+│   │   │   │           │   └── Disciplina.java
+│   │   │   │           └── repository
+│   │   │   │               └── DisciplinaRepository.java
+│   │   │   └── resources
+│   │   │       └── application.properties
+│   │   └── test
+│   │       └── java
+│   │           └── com
+│   │               └── disciplina
+│   │                   ├── DisciplinaControllerTest.java
+│   │                   └── entidade
+│   │                       └── DisciplinaTest.java
+│   └── target
+│       └── classes
+│           └── application.properties
+│
+├── estudante
 │   ├── Dockerfile
-│   └── pom.xml
-├── docker-compose.yml
-└── README.md
+│   ├── pom.xml
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── com
+│   │   │   │       └── estudante
+│   │   │   │           ├── EstudanteApplication.java
+│   │   │   │           ├── EstudanteController.java
+│   │   │   │           ├── entidade
+│   │   │   │           │   └── Estudante.java
+│   │   │   │           └── repository
+│   │   │   │               └── EstudanteRepository.java
+│   │   │   └── resources
+│   │   │       └── application.properties
+│   │   └── test
+│   │       └── java
+│   │           └── com
+│   │               └── estudante
+│   │                   ├── EstudanteControllerTest.java
+│   │                   └── entidade
+│   │                       └── EstudanteTest.java
+│   └── target
+│       └── classes
+│           └── application.properties
+│
+├── README.md
+└── docker-compose.yml
 ```
 
 ## Resolução de problemas comuns
