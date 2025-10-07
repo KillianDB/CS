@@ -1,0 +1,45 @@
+name: Tests Pipeline
+
+on:
+  pull_request:
+    branches: [ dev, main ]
+    types: [ opened, synchronized ]
+  
+permissions:
+  contents: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Verify Compose file exists
+        run: ls -la .
+
+      - name: Set up Docker Compose
+        run: |
+          docker compose version
+      
+      - name: Build and start services
+        run: docker compose up -d
+      
+      - name: Build and test disciplina-service
+        working-directory: ./disciplina
+        run: mvn clean test
+
+      - name: Build and test estudante-service
+        working-directory: ./estudante
+        run: mvn clean test
+      
+      - name: Stop and cleanup
+        if: always()
+        run: docker compose down -v
