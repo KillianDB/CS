@@ -20,6 +20,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
       - name: Verify Compose file exists
         run: ls -la .
 
@@ -30,11 +36,13 @@ jobs:
       - name: Build and start services
         run: docker compose up -d
       
-      - name: Run tests on Disciplina
-        run: docker compose exec -T disciplina-service mvn test
+      - name: Build and test disciplina-service
+        working-directory: ./disciplina
+        run: mvn clean test
 
-      - name: Run tests on Estudante
-        run: docker compose exec -T estudante-service mvn test
+      - name: Build and test estudante-service
+        working-directory: ./estudante
+        run: mvn clean test
       
       - name: Stop and cleanup
         if: always()
