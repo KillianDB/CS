@@ -17,6 +17,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify Compose file exists
+        run: ls -la .
+
       - name: Set up Docker Compose
         run: |
           docker compose version
