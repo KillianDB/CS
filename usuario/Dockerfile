@@ -39,7 +39,7 @@ EXPOSE 8082
 
 # Checa a saúde do serviço
 HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8082/api/estudantes/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8082/api/usuarios/health || exit 1
 
 # Roda a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]

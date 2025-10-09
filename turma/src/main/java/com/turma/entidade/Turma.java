@@ -1,4 +1,4 @@
-package com.disciplina.entidade;
+package com.turma.entidade;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -7,38 +7,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "disciplinas")
-public class Disciplina {
-    
+@Table(name = "turmas")
+public class Turma {
+
     @Id
-    @NotBlank(message = "Código da disciplina é obrigatório")
+    @NotBlank(message = "Código da turma é obrigatório")
     @Size(min = 3, max = 10, message = "Código deve ter entre 3 e 10 caracteres")
     private String codigo;
-    
+
     @Column(nullable = false)
-    @NotBlank(message = "Nome da disciplina é obrigatório")
+    @NotBlank(message = "Nome da turma é obrigatório")
     @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
     private String nome;
-    
+
     @Column(nullable = false)
     @NotBlank(message = "Horário é obrigatório")
     private String horario;
-    
+
     @ElementCollection
-    @CollectionTable(name = "disciplina_estudantes", joinColumns = @JoinColumn(name = "disciplina_codigo"))
+    @CollectionTable(name = "turma_estudantes", joinColumns = @JoinColumn(name = "turma_codigo"))
     @Column(name = "estudante_id")
     private List<String> idEstudante = new ArrayList<>();
 
-    public Disciplina() {}
+    public Turma() {
+    }
 
-    public Disciplina(String codigo, String nome, String horario) {
+    public Turma(String codigo, String nome, String horario) {
         this.codigo = codigo;
         this.nome = nome;
         this.horario = horario;
         this.idEstudante = new ArrayList<>();
     }
 
-    public Disciplina(String codigo, String nome, String horario, List<String> idEstudante) {
+    public Turma(String codigo, String nome, String horario, List<String> idEstudante) {
         this.codigo = codigo;
         this.nome = nome;
         this.horario = horario;
@@ -89,7 +90,7 @@ public class Disciplina {
 
     @Override
     public String toString() {
-        return "Disciplina{" +
+        return "Turma{" +
                 "codigo='" + codigo + '\'' +
                 ", nome='" + nome + '\'' +
                 ", horario='" + horario + '\'' +
