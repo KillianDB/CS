@@ -1,7 +1,7 @@
 package com.turma;
 
-import com.turma.entidade.Turma;
-import com.turma.repository.TurmaRepository;
+import com.turma.entidade.Reserva;
+import com.turma.repository.ReservaRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TurmaControllerTest {
+class ReservaControllerTest {
 
     @Mock
     private TurmaRepository turmaRepository;

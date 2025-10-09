@@ -1,7 +1,7 @@
 package com.turma;
 
-import com.turma.entidade.Turma;
-import com.turma.repository.TurmaRepository;
+import com.turma.entidade.Reserva;
+import com.turma.repository.ReservaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -25,6 +25,11 @@ public class Turma {
     private String idDisciplina;
 
     @ElementCollection
+    @CollectionTable(name = "turma_aluno", joinColumns = @JoinColumn(name = "turma_codigo"))
+    @Column(name = "professor_id")
+    private String idProfessor;
+
+    @ElementCollection
     @CollectionTable(name = "turma_estudantes", joinColumns = @JoinColumn(name = "turma_codigo"))
     @Column(name = "estudante_id")
     private List<String> idEstudante = new ArrayList<>();
@@ -38,10 +43,11 @@ public class Turma {
         this.idEstudante = new ArrayList<>();
     }
 
-    public Turma(String codigo, String horario, String idDisciplina, List<String> idEstudante) {
+    public Turma(String codigo, String horario, String idDisciplina, String idProfessor, List<String> idEstudante) {
         this.codigo = codigo;
         this.horario = horario;
         this.idDisciplina = idDisciplina;
+        this.idProfessor = idProfessor;
         this.idEstudante = idEstudante != null ? new ArrayList<>(idEstudante) : new ArrayList<>();
     }
 
@@ -68,7 +74,15 @@ public class Turma {
     public void setIdDisciplina(String idDisciplina) {
         this.idDisciplina = idDisciplina;
     }
-    
+
+    public String getIdProfessor() {
+        return idProfessor;
+    }
+
+    public void setIdProfessor(String idProfessor) {
+        this.idProfessor = idProfessor;
+    }
+
     public List<String> getIdEstudante() {
         return idEstudante;
     }
@@ -93,6 +107,7 @@ public class Turma {
                 "codigo='" + codigo + '\'' +
                 ", horario='" + horario + '\'' +
                 ", idDisciplina='" + idDisciplina + '\'' +
+                ", idProfessor='" + idProfessor + '\'' +
                 ", idEstudante=" + idEstudante +
                 '}';
     }

@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TurmaTest {
+class ReservaTest {
 
     @Test
     void testConstrutorComTresParametros() {
-        Turma turma = new Turma("95300-04", "Cálculo I", "2LM4NP");
+        Reserva turma = new Reserva("95300-04", "Cálculo I", "2LM4NP");
 
         assertEquals("95300-04", turma.getCodigo());
         assertEquals("Cálculo I", turma.getNome());
@@ -23,7 +23,7 @@ class TurmaTest {
     void testConstrutorComQuatroParametros() {
         List<String> estudantes = Arrays.asList("EST001", "EST002");
 
-        Turma turma = new Turma("4611C-06", "Fundamentos de Programação", "2JK4LM6NP", estudantes);
+        Reserva turma = new Reserva("4611C-06", "Fundamentos de Programação", "2JK4LM6NP", estudantes);
 
         assertEquals("4611C-06", turma.getCodigo());
         assertEquals("Fundamentos de Programação", turma.getNome());
@@ -34,7 +34,7 @@ class TurmaTest {
 
     @Test
     void testConstrutorComListaEstudantesNula() {
-        Turma turma = new Turma("4611F-04", "POO", "2NP4NP", null);
+        Reserva turma = new Reserva("4611F-04", "POO", "2NP4NP", null);
 
         assertEquals("4611F-04", turma.getCodigo());
         assertTrue(turma.getIdEstudante().isEmpty());
@@ -42,7 +42,7 @@ class TurmaTest {
 
     @Test
     void testConstrutorVazio() {
-        Turma turma = new Turma();
+        Reserva turma = new Reserva();
 
         assertNull(turma.getCodigo());
         assertNull(turma.getNome());
@@ -52,7 +52,7 @@ class TurmaTest {
 
     @Test
     void testSettersEGetters() {
-        Turma turma = new Turma();
+        Reserva turma = new Reserva();
 
         turma.setCodigo("98708-04");
         turma.setNome("Intel. Artif.");
@@ -66,7 +66,7 @@ class TurmaTest {
     @Test
     void testAdicionaEstudante() {
 
-        Turma turma = new Turma("98708-04", "Intel. Artif.", "2NP4NP");
+        Reserva turma = new Reserva("98708-04", "Intel. Artif.", "2NP4NP");
 
         turma.adicionaEstudante("EST001");
         turma.adicionaEstudante("EST002");
@@ -78,7 +78,7 @@ class TurmaTest {
     @Test
     void testAdicionaEstudanteDuplicado() {
 
-        Turma turma = new Turma("46504-04", "Construção de Software", "2NP4NP");
+        Reserva turma = new Reserva("46504-04", "Construção de Software", "2NP4NP");
 
         turma.adicionaEstudante("EST001");
         turma.adicionaEstudante("EST001");
@@ -89,7 +89,7 @@ class TurmaTest {
     @Test
     void testAdicionaEstudanteNulo() {
 
-        Turma turma = new Turma("46504-04", "Construção de Software", "2NP4NP");
+        Reserva turma = new Reserva("46504-04", "Construção de Software", "2NP4NP");
 
         turma.adicionaEstudante(null);
 
@@ -99,7 +99,7 @@ class TurmaTest {
     @Test
     void testAdicionaEstudanteVazio() {
 
-        Turma turma = new Turma("46504-04", "Construção de Software", "2NP4NP");
+        Reserva turma = new Reserva("46504-04", "Construção de Software", "2NP4NP");
 
         turma.adicionaEstudante("");
 
@@ -110,7 +110,7 @@ class TurmaTest {
     void testRemoveEstudante() {
 
         List<String> estudantes = Arrays.asList("EST001", "EST002");
-        Turma turma = new Turma("46504-04", "Construção de Software", "2NP4NP", estudantes);
+        Reserva turma = new Reserva("46504-04", "Construção de Software", "2NP4NP", estudantes);
 
         turma.removeEstudante("EST001");
 
@@ -123,7 +123,7 @@ class TurmaTest {
     void testRemoveEstudanteInexistente() {
 
         List<String> estudantes = Arrays.asList("EST001", "EST002");
-        Turma turma = new Turma("46504-04", "Construção de Software", "2NP4NP", estudantes);
+        Reserva turma = new Reserva("46504-04", "Construção de Software", "2NP4NP", estudantes);
 
         turma.removeEstudante("EST999");
 
