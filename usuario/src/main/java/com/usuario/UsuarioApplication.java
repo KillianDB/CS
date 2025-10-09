@@ -1,13 +1,13 @@
-package com.estudante;
+package com.usuario;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EstudanteApplication {
+public class UsuarioApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EstudanteApplication.class, args);
+        SpringApplication.run(UsuarioApplication.class, args);
     }
 
 }

@@ -11,13 +11,13 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.estudante</groupId>
-    <artifactId>estudante-service</artifactId>
+    <groupId>com.usuario</groupId>
+    <artifactId>usuario-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>estudante-service</name>
-    <description>Microsserviço de Estudantes</description>
+    <name>usuario-service</name>
+    <description>Microsserviço de Usuários</description>
 
     <properties>
         <java.version>17</java.version>
