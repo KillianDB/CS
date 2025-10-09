@@ -10,10 +10,6 @@ import java.util.Optional;
 @Repository
 public interface TurmaRepository extends JpaRepository<Turma, String> {
 
-    Optional<Turma> findByNomeIgnoreCase(String nome);
-
-    List<Turma> findByNomeContainingIgnoreCase(String nome);
-
     String findHorarioByCodigo(String codigo);
 
     boolean existsByCodigo(String codigo);

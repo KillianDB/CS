@@ -16,13 +16,13 @@ public class Turma {
     private String codigo;
 
     @Column(nullable = false)
-    @NotBlank(message = "Nome da turma é obrigatório")
-    @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
-    private String nome;
-
-    @Column(nullable = false)
     @NotBlank(message = "Horário é obrigatório")
     private String horario;
+
+    @ElementCollection
+    @CollectionTable(name = "turma_disciplina", joinColumns = @JoinColumn(name = "turma_codigo"))
+    @Column(name = "disciplina_id")
+    private String idDisciplina;
 
     @ElementCollection
     @CollectionTable(name = "turma_estudantes", joinColumns = @JoinColumn(name = "turma_codigo"))
@@ -32,17 +32,16 @@ public class Turma {
     public Turma() {
     }
 
-    public Turma(String codigo, String nome, String horario) {
+    public Turma(String codigo, String horario) {
         this.codigo = codigo;
-        this.nome = nome;
         this.horario = horario;
         this.idEstudante = new ArrayList<>();
     }
 
-    public Turma(String codigo, String nome, String horario, List<String> idEstudante) {
+    public Turma(String codigo, String horario, String idDisciplina, List<String> idEstudante) {
         this.codigo = codigo;
-        this.nome = nome;
         this.horario = horario;
+        this.idDisciplina = idDisciplina;
         this.idEstudante = idEstudante != null ? new ArrayList<>(idEstudante) : new ArrayList<>();
     }
 
@@ -54,14 +53,6 @@ public class Turma {
         this.codigo = codigo;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getHorario() {
         return horario;
     }
@@ -70,6 +61,14 @@ public class Turma {
         this.horario = horario;
     }
 
+    public String getIdDisciplina() {
+        return idDisciplina;
+    }
+
+    public void setIdDisciplina(String idDisciplina) {
+        this.idDisciplina = idDisciplina;
+    }
+    
     public List<String> getIdEstudante() {
         return idEstudante;
     }
@@ -92,8 +91,8 @@ public class Turma {
     public String toString() {
         return "Turma{" +
                 "codigo='" + codigo + '\'' +
-                ", nome='" + nome + '\'' +
                 ", horario='" + horario + '\'' +
+                ", idDisciplina='" + idDisciplina + '\'' +
                 ", idEstudante=" + idEstudante +
                 '}';
     }
