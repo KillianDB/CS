@@ -35,11 +35,11 @@ RUN chown appuser:appgroup app.jar
 USER appuser
 
 # Expõe a porta
-EXPOSE 8081
+EXPOSE 8083
 
 # Checa a saúde do serviço
 HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8081/api/reservas/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8083/api/reservas/health || exit 1
 
 # Roda a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
