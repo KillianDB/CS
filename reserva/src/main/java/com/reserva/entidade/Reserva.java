@@ -21,10 +21,8 @@ public class Reserva {
     @NotBlank(message = "Data é obrigatória")
     private String data;
 
-    @ElementCollection
-    @NotBlank(message = "Turma é obrigatória")
-    @CollectionTable(name = "reserva_turma", joinColumns = @JoinColumn(name = "reserva_codigo"))
     @Column(name = "turma_id")
+    @NotBlank(message = "Turma é obrigatória")
     private String idTurma;
 
     public Reserva() {

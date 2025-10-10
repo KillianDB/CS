@@ -19,18 +19,14 @@ public class Turma {
     @NotBlank(message = "Horário é obrigatório")
     private String horario;
 
-    @ElementCollection
-    @CollectionTable(name = "turma_disciplina", joinColumns = @JoinColumn(name = "turma_codigo"))
-    @Column(name = "disciplina_id")
-    private String idDisciplina;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "disciplina_id", nullable = false)
+    private Disciplina disciplina;
 
-    @ElementCollection
-    @CollectionTable(name = "turma_aluno", joinColumns = @JoinColumn(name = "turma_codigo"))
     @Column(name = "professor_id")
+    @NotBlank(message = "Professor é obrigatório")
     private String idProfessor;
 
-    @ElementCollection
-    @CollectionTable(name = "turma_estudantes", joinColumns = @JoinColumn(name = "turma_codigo"))
     @Column(name = "estudante_id")
     private List<String> idEstudante = new ArrayList<>();
 
@@ -43,12 +39,12 @@ public class Turma {
         this.idEstudante = new ArrayList<>();
     }
 
-    public Turma(String codigo, String horario, String idDisciplina, String idProfessor, List<String> idEstudante) {
+    public Turma(String codigo, String horario, Disciplina disciplina, String idProfessor) {
         this.codigo = codigo;
         this.horario = horario;
-        this.idDisciplina = idDisciplina;
+        this.disciplina = disciplina;
         this.idProfessor = idProfessor;
-        this.idEstudante = idEstudante != null ? new ArrayList<>(idEstudante) : new ArrayList<>();
+        this.idEstudante = new ArrayList<>();
     }
 
     public String getCodigo() {
@@ -67,12 +63,12 @@ public class Turma {
         this.horario = horario;
     }
 
-    public String getIdDisciplina() {
-        return idDisciplina;
+    public String getDisciplina() {
+        return disciplina.getCodigo();
     }
 
-    public void setIdDisciplina(String idDisciplina) {
-        this.idDisciplina = idDisciplina;
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
     }
 
     public String getIdProfessor() {
@@ -106,7 +102,7 @@ public class Turma {
         return "Turma{" +
                 "codigo='" + codigo + '\'' +
                 ", horario='" + horario + '\'' +
-                ", idDisciplina='" + idDisciplina + '\'' +
+                ", disciplina='" + disciplina.getCodigo() + '\'' +
                 ", idProfessor='" + idProfessor + '\'' +
                 ", idEstudante=" + idEstudante +
                 '}';

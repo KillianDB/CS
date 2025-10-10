@@ -19,7 +19,7 @@ services:
     networks:
       - microservices-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/api/turmas/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/turmas/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -44,7 +44,7 @@ services:
     networks:
       - microservices-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/api/usuarios/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/usuarios/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -69,7 +69,7 @@ services:
     networks:
       - microservices-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/api/reservas/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/reservas/health"]
       interval: 30s
       timeout: 10s
       retries: 3
