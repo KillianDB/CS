@@ -1,7 +1,7 @@
 package com.turma;
 
-import com.turma.entidade.Reserva;
-import com.turma.repository.ReservaRepository;
+import com.turma.entidade.Turma;
+import com.turma.repository.TurmaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,12 +61,6 @@ public class TurmaController {
             return ResponseEntity.badRequest()
                     .body("Erro ao adicionar estudante: " + e.getMessage());
         }
-    }
-
-    @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Turma>> buscarPorNome(@PathVariable String nome) {
-        List<Turma> turmas = turmaRepository.findByNomeContainingIgnoreCase(nome);
-        return ResponseEntity.ok(turmas);
     }
 
     @GetMapping("/codigo/{codigo}/horario")

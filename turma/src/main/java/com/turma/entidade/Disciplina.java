@@ -1,4 +1,4 @@
-package main.java.com.turma.entidade;
+package com.turma.entidade;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

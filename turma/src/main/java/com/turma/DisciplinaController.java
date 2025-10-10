@@ -1,4 +1,4 @@
-package main.java.com.turma;
+package com.turma;
 
 import com.turma.entidade.Disciplina;
 import com.turma.repository.DisciplinaRepository;

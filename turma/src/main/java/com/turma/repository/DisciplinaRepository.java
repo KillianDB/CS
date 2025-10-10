@@ -1,4 +1,4 @@
-package main.java.com.turma.repository;
+package com.turma.repository;
 
 import com.turma.entidade.Disciplina;
 import org.springframework.data.jpa.repository.JpaRepository;
