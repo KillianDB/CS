@@ -51,14 +51,14 @@ services:
       start_period: 30s
     restart: unless-stopped
 
-    reserva-service:
-      build:
-        context: ./reserva
-        dockerfile: Dockerfile
-      container_name: reserva-service
-      ports:
+  reserva-service:
+    build:
+      context: ./reserva
+      dockerfile: Dockerfile
+    container_name: reserva-service
+    ports:
       - "8083:8083"
-      environment:
+    environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:h2:mem:reserva_db
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
@@ -66,15 +66,15 @@ services:
       - SPRING_DATASOURCE_PASSWORD=
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - SERVER_PORT=8083
-      networks:
+    networks:
       - microservices-network
-      healthcheck:
-        test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/api/reservas/health"]
-        interval: 30s
-        timeout: 10s
-        retries: 3
-        start_period: 30s
-      restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/api/reservas/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
 
 networks:
   microservices-network:
