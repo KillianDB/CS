@@ -1,4 +1,4 @@
-package com.turma;
+package com.reserva;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -77,7 +77,7 @@ public class Usuario {
     }
 
     public String getTipoUsuario() {
-        return tipoUsuario.getTipo();
+        return tipoUsuario.name();
     }
 
     public void setTipoUsuario(TipoUsuario tipoUsuario) {

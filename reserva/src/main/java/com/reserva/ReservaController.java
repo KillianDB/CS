@@ -1,14 +1,13 @@
-package com.turma;
+package com.reserva;
 
-import com.turma.entidade.Turma;
-import com.turma.repository.TurmaRepository;
+import com.reserva.entidade.Reserva;
+import com.reserva.repository.ReservaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController

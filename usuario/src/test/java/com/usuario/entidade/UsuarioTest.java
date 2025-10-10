@@ -18,7 +18,7 @@ class UsuarioTest {
     @Test
     void testConstrutorCompleto() {
         Usuario usuario = new Usuario("Ana", "67890", "ana@email.com", "senha123",
-                new TipoUsuario(TipoUsuario.Tipo.ESTUDANTE));
+                TipoUsuario.ESTUDANTE);
         assertEquals("Ana", usuario.getNome());
         assertEquals("67890", usuario.getMatricula());
         assertEquals("ana@email.com", usuario.getEmail());
@@ -40,7 +40,7 @@ class UsuarioTest {
     @Test
     void testToString() {
         Usuario usuario = new Usuario("Lucas", "44556", "lucas@email.com", "senha123",
-                new TipoUsuario(TipoUsuario.Tipo.PROFESSOR));
+                TipoUsuario.PROFESSOR);
         String toString = usuario.toString();
         assertTrue(toString.contains("Lucas"));
         assertTrue(toString.contains("44556"));
