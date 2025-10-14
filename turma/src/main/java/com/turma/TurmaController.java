@@ -2,6 +2,8 @@ package com.turma;
 
 import com.turma.entidade.Turma;
 import com.turma.repository.TurmaRepository;
+import com.turma.service.TurmaService;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class TurmaController {
     @Autowired
     private TurmaRepository turmaRepository;
 
+    @Autowired
+    private TurmaService turmaService;
+
     @GetMapping("/codigo/{codigo}")
     public ResponseEntity<Turma> buscarPorCodigo(@PathVariable String codigo) {
         Optional<Turma> turma = turmaRepository.findById(codigo);
@@ -29,12 +34,7 @@ public class TurmaController {
     @PostMapping
     public ResponseEntity<?> criarTurma(@Valid @RequestBody Turma turma) {
         try {
-            if (turmaRepository.existsByCodigo(turma.getCodigo())) {
-                return ResponseEntity.badRequest()
-                        .body("Já existe uma turma com o código: " + turma.getCodigo());
-            }
-
-            Turma turmaSalva = turmaRepository.save(turma);
+            String turmaSalva = turmaService.criaTurma(turma);
             return ResponseEntity.status(HttpStatus.CREATED).body(turmaSalva);
         } catch (Exception e) {
             return ResponseEntity.badRequest()
