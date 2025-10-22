@@ -11,7 +11,6 @@ import java.util.List;
 public class Turma {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotBlank(message = "Código da turma é obrigatório")
     @Size(min = 3, max = 10, message = "Código deve ter entre 3 e 10 caracteres")
     private String codigo;
