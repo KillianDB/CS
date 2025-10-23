@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +61,17 @@ public class TurmaController {
         } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body("Erro ao adicionar estudante: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/estudantes/")
+    public ResponseEntity<?> adicionarEstudanteArquivo(@RequestParam("file") MultipartFile file){
+        try{
+            turmaService.addAlunos(file);
+
+            return ResponseEntity.ok().body("Estudantes Cadastrados");
+        } catch (Exception e){ 
+            return ResponseEntity.badRequest().body("Erro ao fazer upload do arquivo: " + e.getMessage());
         }
     }
 
