@@ -5,6 +5,7 @@ import com.turma.entidade.Turma;
 import com.turma.repository.TurmaRepository;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,6 +21,12 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 @Service
 public class TurmaService {
@@ -41,7 +48,9 @@ public class TurmaService {
 
     public void addAlunos(MultipartFile arquivo) throws Exception{
         String extensaoArquivo = arquivo.getContentType();
-        List<MatriculaDTO> matriculas = lerCSV(arquivo);
+        List<MatriculaDTO> matriculas;
+        if(extensaoArquivo.equals("text/csv")) matriculas = lerCSV(arquivo);
+        else matriculas = lerXLSX(arquivo);
 
         Map<String, List<String>> turmaEstudante = matriculas.stream()
         .collect(Collectors.groupingBy(
@@ -85,5 +94,30 @@ public class TurmaService {
         } catch (IOException e){
             throw e;
         }
+    }
+
+    public List<MatriculaDTO> lerXLSX(MultipartFile xlsx) throws Exception{
+        Workbook workbook = WorkbookFactory.create(xlsx.getInputStream());
+        
+        List<MatriculaDTO> matriculas = new ArrayList<>();
+
+        for(int i = 0; i < workbook.getNumberOfSheets(); i++){
+            Sheet sheet = workbook.getSheetAt(i);
+
+            for(Row row : sheet){
+                Cell cellCodTurma = row.getCell(0);
+                Cell cellCodEstudante = row.getCell(1);
+                String codigo;
+                String estudante;
+                if(cellCodTurma.getCellType() == CellType.STRING && cellCodEstudante.getCellType() == CellType.STRING){
+                    codigo = cellCodTurma.getRichStringCellValue().getString();
+                    estudante = cellCodEstudante.getRichStringCellValue().getString();
+                    matriculas.add(new MatriculaDTO(codigo, estudante));
+                } else {
+                    throw new Exception("XLSX com o formato errado");
+                }
+            }
+        }
+        return matriculas;
     }
 }
