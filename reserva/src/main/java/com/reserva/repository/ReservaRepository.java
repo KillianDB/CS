@@ -1,22 +1,34 @@
 package com.reserva.repository;
 
 import com.reserva.entidade.Reserva;
-
-import java.util.Collection;
-import java.util.Optional;
+import com.reserva.entidade.ReservaPeriferico;
+import com.reserva.entidade.ReservaSala;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.query.Param;
 
-@Repository
+import java.util.List;
+import java.util.Optional;
+
 public interface ReservaRepository extends JpaRepository<Reserva, String> {
-    String findHorarioByCodigo(String codigo);
+
+    @Query("SELECT r.hora FROM Reserva r WHERE r.codigo = :codigo")
+    String findHorarioByCodigo(@Param("codigo") String codigo);
+
     boolean existsByCodigo(String codigo);
 
-    @Query("SELECT * FROM reservas r WHERE r.data = ?1")
-    Collection<Reserva> findReservasByData(String data);
+    List<Reserva> findByData(String data);
 
-    @Query("SELECT * FROM reservas r WHERE r.data = ?1 AND r.hora = ?2 AND r.id = ?3")
-    Optional<Reserva> checkDisponibilidade(String data, String hora, String id);
+    @Query("SELECT r FROM ReservaSala r WHERE r.sala.codigo = :codigoSala AND r.data = :data AND r.hora = :hora")
+    Optional<ReservaSala> checkDisponibilidadeSala(@Param("codigoSala") String codigoSala,
+            @Param("data") String data,
+            @Param("hora") String hora);
+
+    @Query("SELECT r FROM ReservaPeriferico r WHERE r.periferico.codigo = :codigoPeriferico AND r.data = :data AND r.hora = :hora")
+    Optional<ReservaPeriferico> checkDisponibilidadePeriferico(@Param("codigoPeriferico") String codigoPeriferico,
+            @Param("data") String data,
+            @Param("hora") String hora);
+
+    List<Reserva> findByCodigoStartingWith(String prefix);
 }

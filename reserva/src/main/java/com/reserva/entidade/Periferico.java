@@ -25,4 +25,20 @@ public class Periferico {
         this.codigo = codigo;
         this.tipo = tipo;
     }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public TipoPeriferico getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoPeriferico tipo) {
+        this.tipo = tipo;
+    }
 }
