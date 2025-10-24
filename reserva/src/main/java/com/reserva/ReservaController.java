@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -60,6 +61,12 @@ public class ReservaController {
             return ResponseEntity.badRequest()
                     .body(ApiResponse.error("Erro ao criar reserva de periferico: " + e.getMessage()));
         }
+    }
+
+    @GetMapping("/items/tipo")
+    public ResponseEntity<List<?>> buscarTodosItemsPorTipo(@RequestParam String tipoItem, @RequestParam String tipo) {
+        List<?> reservas = reservaService.findAllByTipo(tipoItem, tipo);
+        return ResponseEntity.ok(reservas);
     }
 
     @GetMapping("/codigo/{codigo}")

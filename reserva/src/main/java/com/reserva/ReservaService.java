@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.reserva.entidade.Reserva;
 import com.reserva.entidade.ReservaPeriferico;
 import com.reserva.entidade.ReservaSala;
+import com.reserva.repository.PerifericoRepository;
 import com.reserva.repository.ReservaRepository;
+import com.reserva.repository.SalaRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,14 +18,28 @@ import java.util.Optional;
 @Service
 public class ReservaService {
     private final ReservaRepository reservaRepository;
+    private final SalaRepository salaRepository;
+    private final PerifericoRepository perifericoRepository;
 
     @Autowired
-    public ReservaService(ReservaRepository reservaRepository) {
+    public ReservaService(ReservaRepository reservaRepository, SalaRepository salaRepository, PerifericoRepository perifericoRepository) {
         this.reservaRepository = reservaRepository;
+        this.salaRepository = salaRepository;
+        this.perifericoRepository = perifericoRepository;
     }
 
     public List<Reserva> findAll() {
         return reservaRepository.findAll();
+    }
+
+    public List<?> findAllByTipo(String tipoItem, String tipo) {
+        if (tipoItem.equalsIgnoreCase("sala")) {
+            return (List<?>) salaRepository.findAllByTipo(tipo);
+        } else if (tipoItem.equalsIgnoreCase("periferico")) {
+            return (List<?>) perifericoRepository.findAllByTipo(tipo);
+        } else {
+            throw new IllegalArgumentException("Tipo de reserva inválido: " + tipo);
+        }
     }
 
     public Optional<Reserva> findById(String codigo) {
