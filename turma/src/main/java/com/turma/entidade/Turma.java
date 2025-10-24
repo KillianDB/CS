@@ -28,7 +28,7 @@ public class Turma {
     private String idProfessor;
 
     @Column(name = "estudante_id")
-    private List<String> idEstudante = new ArrayList<>();
+    private List<String> idEstudantes = new ArrayList<>();
 
     public Turma() {
     }
@@ -36,7 +36,7 @@ public class Turma {
     public Turma(String codigo, String horario) {
         this.codigo = codigo;
         this.horario = horario;
-        this.idEstudante = new ArrayList<>();
+        this.idEstudantes = new ArrayList<>();
     }
 
     public Turma(String codigo, String horario, Disciplina disciplina, String idProfessor) {
@@ -44,7 +44,7 @@ public class Turma {
         this.horario = horario;
         this.disciplina = disciplina;
         this.idProfessor = idProfessor;
-        this.idEstudante = new ArrayList<>();
+        this.idEstudantes = new ArrayList<>();
     }
 
     public String getCodigo() {
@@ -79,22 +79,22 @@ public class Turma {
         this.idProfessor = idProfessor;
     }
 
-    public List<String> getIdEstudante() {
-        return idEstudante;
+    public List<String> getIdEstudantes() {
+        return idEstudantes;
     }
 
-    public void setIdEstudante(List<String> idEstudante) {
-        this.idEstudante = idEstudante != null ? idEstudante : new ArrayList<>();
+    public void setIdEstudantes(List<String> idEstudantes) {
+        this.idEstudantes = idEstudantes != null ? idEstudantes : new ArrayList<>();
     }
 
     public void adicionaEstudante(String estudanteId) {
-        if (estudanteId != null && !estudanteId.trim().isEmpty() && !this.idEstudante.contains(estudanteId)) {
-            this.idEstudante.add(estudanteId);
+        if (estudanteId != null && !estudanteId.trim().isEmpty() && !this.idEstudantes.contains(estudanteId)) {
+            this.idEstudantes.add(estudanteId);
         }
     }
 
     public void removeEstudante(String estudanteId) {
-        this.idEstudante.remove(estudanteId);
+        this.idEstudantes.remove(estudanteId);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class Turma {
                 ", horario='" + horario + '\'' +
                 ", disciplina='" + disciplina.getCodigo() + '\'' +
                 ", idProfessor='" + idProfessor + '\'' +
-                ", idEstudante=" + idEstudante +
+                ", idEstudantes=" + idEstudantes +
                 '}';
     }
 }

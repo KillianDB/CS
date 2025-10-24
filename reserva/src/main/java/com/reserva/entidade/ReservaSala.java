@@ -2,34 +2,53 @@ package com.reserva.entidade;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "reservas_salas")
 public class ReservaSala extends Reserva {
 
-    @Id
-    @NotBlank(message = "Código da sala é obrigatório")
-    @Size(min = 3, max = 30, message = "Código deve ter entre 3 e 30 caracteres")
-    private String codigo;
+    @Column(name = "codigo_professor", nullable = false)
+    @NotBlank(message = "Código do professor é obrigatório")
+    private String codigoProfessor;
 
-    @Column(nullable = false)
+    @Column(name = "codigo_turma", nullable = false)
+    @NotBlank(message = "Código da turma é obrigatório")
+    private String codigoTurma;
+
+    @Column(name = "tipo_sala", nullable = false)
     @NotBlank(message = "Tipo de sala é obrigatório")
     @Enumerated(EnumType.STRING)
     private TipoSala tipo;
 
-    public ReservaSala(String codigoProfessor, String codigoSala, TipoSala tipo) {
-        super();
-        this.codigo = codigoProfessor + codigoSala;
+    public ReservaSala(String codigoProfessor, String codigoTurma, TipoSala tipo, String hora, String data) {
+        super(codigoProfessor + codigoTurma, hora, data);
+        this.codigoProfessor = codigoProfessor;
+        this.codigoTurma = codigoTurma;
         this.tipo = tipo;
     }
 
     public String getCodigo() {
-        return codigo;
+        return super.getCodigo();
     }
 
-    public void setCodigo(String codigoProfessor, String codigoSala) {
-        this.codigo = codigoProfessor + codigoSala;
+    public void setCodigo(String codigoProfessor, String codigoTurma) {
+        super.setCodigo(codigoProfessor + codigoTurma);
+    }
+
+    public String getHora() {
+        return super.getHora();
+    }
+
+    public void setHora(String hora) {
+        super.setHora(hora);
+    }
+
+    public String getData() {
+        return super.getData();
+    }
+
+    public void setData(String data) {
+        super.setData(data);
     }
 
     public TipoSala getTipo() {

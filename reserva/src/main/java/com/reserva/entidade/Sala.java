@@ -18,4 +18,11 @@ public class Sala {
     @Enumerated(EnumType.STRING)
     private TipoSala tipo;
 
+    public Sala() {
+    }
+
+    public Sala(String codigo, TipoSala tipo) {
+        this.codigo = codigo;
+        this.tipo = tipo;
+    }
 }
