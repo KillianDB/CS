@@ -32,12 +32,16 @@ jobs:
       - name: Build and start services
         run: docker compose up -d
       
-      - name: Build and test disciplina-service
-        working-directory: ./disciplina
+      - name: Build and test reserva-service
+        working-directory: ./reserva
+        run: mvn clean test
+      
+      - name: Build and test turma-service
+        working-directory: ./turma
         run: mvn clean test
 
-      - name: Build and test estudante-service
-        working-directory: ./estudante
+      - name: Build and test usuario-service
+        working-directory: ./usuario
         run: mvn clean test
       
       - name: Stop and cleanup
