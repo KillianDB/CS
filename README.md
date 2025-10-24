@@ -15,7 +15,8 @@ Ambos os microsserviços utilizam:
 
 ## Modelagem lógica BD
 
-<img width="1049" height="573" alt="image" src="https://github.com/user-attachments/assets/5787921f-4b7a-441c-a603-93cd2240e011" />
+<img width="1196" height="561" alt="image" src="https://github.com/user-attachments/assets/c5cf8ad9-1feb-43ff-be64-e9f7bb3c06e0" />
+
 
 
 ## Como executar
