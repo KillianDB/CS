@@ -23,7 +23,7 @@ public class Disciplina {
     @ElementCollection
     @CollectionTable(name = "turma_disciplina", joinColumns = @JoinColumn(name = "disciplina_codigo"))
     @Column(name = "turma_id")
-    private List<String> idTurma = new ArrayList<>();
+    private List<String> idTurmas = new ArrayList<>();
 
     public Disciplina() {
     }
@@ -31,13 +31,13 @@ public class Disciplina {
     public Disciplina(String codigo, String nome) {
         this.codigo = codigo;
         this.nome = nome;
-        this.idTurma = new ArrayList<>();
+        this.idTurmas = new ArrayList<>();
     }
 
-    public Disciplina(String codigo, String nome, List<String> idTurma) {
+    public Disciplina(String codigo, String nome, List<String> idTurmas) {
         this.codigo = codigo;
         this.nome = nome;
-        this.idTurma = idTurma != null ? new ArrayList<>(idTurma) : new ArrayList<>();
+        this.idTurmas = idTurmas != null ? new ArrayList<>(idTurmas) : new ArrayList<>();
     }
 
     public String getCodigo() {
@@ -57,21 +57,21 @@ public class Disciplina {
     }
 
     public List<String> getIdTurmas() {
-        return idTurma;
+        return idTurmas;
     }
 
-    public void setIdTurmas(List<String> idTurma) {
-        this.idTurma = idTurma != null ? idTurma : new ArrayList<>();
+    public void setIdTurmas(List<String> idTurmas) {
+        this.idTurmas = idTurmas != null ? idTurmas : new ArrayList<>();
     }
 
     public void adicionaTurma(String turmaId) {
-        if (turmaId != null && !turmaId.trim().isEmpty() && !this.idTurma.contains(turmaId)) {
-            this.idTurma.add(turmaId);
+        if (turmaId != null && !turmaId.trim().isEmpty() && !this.idTurmas.contains(turmaId)) {
+            this.idTurmas.add(turmaId);
         }
     }
 
     public void removeTurma(String turmaId) {
-        this.idTurma.remove(turmaId);
+        this.idTurmas.remove(turmaId);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Disciplina {
         return "Disciplina{" +
                 "codigo='" + codigo + '\'' +
                 ", nome='" + nome + '\'' +
-                ", idTurma=" + idTurma +
+                ", idTurmas=" + idTurmas +
                 '}';
     }
 }

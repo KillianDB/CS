@@ -21,18 +21,13 @@ public class Reserva {
     @NotBlank(message = "Data é obrigatória")
     private String data;
 
-    @Column(name = "turma_id")
-    @NotBlank(message = "Turma é obrigatória")
-    private String idTurma;
-
     public Reserva() {
     }
 
-    public Reserva(String codigo, String hora, String data, String idTurma) {
+    public Reserva(String codigo, String hora, String data) {
         this.codigo = codigo;
         this.hora = hora;
         this.data = data;
-        this.idTurma = idTurma;
     }
 
     public String getCodigo() {
@@ -59,21 +54,12 @@ public class Reserva {
         this.data = data;
     }
 
-    public String getIdTurma() {
-        return idTurma;
-    }
-
-    public void setIdTurma(String idTurma) {
-        this.idTurma = idTurma;
-    }
-
     @Override
     public String toString() {
         return "Reserva{" +
                 "codigo='" + codigo + '\'' +
                 ", hora='" + hora + '\'' +
                 ", data='" + data + '\'' +
-                ", idTurma='" + idTurma + '\'' +
                 '}';
     }
 }
