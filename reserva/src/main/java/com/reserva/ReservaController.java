@@ -69,6 +69,14 @@ public class ReservaController {
         return ResponseEntity.ok(reservas);
     }
 
+    @GetMapping("/usuario")
+    public ResponseEntity<List<Reserva>> buscarReservasPorUsuario(
+            @RequestParam(value = "prefix", required = true) String prefix,
+            @RequestParam(value = "tipo", required = false) String tipo) {
+        List<Reserva> reservas = reservaService.findByCodigoContaining(prefix);
+        return ResponseEntity.ok(reservas);
+    }
+
     @GetMapping("/codigo/{codigo}")
     public ResponseEntity<Reserva> buscarPorCodigo(@PathVariable String codigo) {
         Optional<Reserva> reserva = reservaService.findById(codigo);
