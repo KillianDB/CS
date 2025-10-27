@@ -2,6 +2,7 @@ package com.usuario.entidade;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -29,7 +30,7 @@ public class Usuario {
     private String senha;
 
     @Column
-    @NotBlank(message = "Tipo de usuário é obrigatório")
+    @NotNull(message = "Tipo de usuário é obrigatório")
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 
@@ -77,10 +78,11 @@ public class Usuario {
     }
 
     public String getTipoUsuario() {
-        return tipoUsuario.name();
+        return tipoUsuario != null ? tipoUsuario.name() : null;
     }
 
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
         this.tipoUsuario = tipoUsuario;
     }
 

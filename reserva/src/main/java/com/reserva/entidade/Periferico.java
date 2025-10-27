@@ -18,4 +18,11 @@ public class Periferico {
     @Enumerated(EnumType.STRING)
     private TipoPeriferico tipo;
 
+    public Periferico() {
+    }
+
+    public Periferico(String codigo, TipoPeriferico tipo) {
+        this.codigo = codigo;
+        this.tipo = tipo;
+    }
 }
