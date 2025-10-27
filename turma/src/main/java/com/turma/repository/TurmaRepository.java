@@ -12,4 +12,6 @@ public interface TurmaRepository extends JpaRepository<Turma, String> {
 
     boolean existsByCodigo(String codigo);
 
+    String findEstudantesByCodigo(String codigo);
+
 }

@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -67,6 +66,25 @@ public class TurmaController {
     public ResponseEntity<String> buscarHorarioDaTurma(@PathVariable String codigo) {
         String horario = turmaRepository.findHorarioByCodigo(codigo);
         return ResponseEntity.ok(horario);
+    }
+
+    @GetMapping("/estudante/{estudanteId}/turmas")
+    public ResponseEntity<java.util.List<Turma>> buscarTurmasDoEstudante(@PathVariable String estudanteId) {
+        java.util.List<Turma> todas = turmaRepository.findAll();
+        java.util.List<Turma> resultado = new java.util.ArrayList<>();
+
+        for (Turma t : todas) {
+            java.util.List<String> estudantes = t.getIdEstudante();
+            if (estudantes != null && estudantes.contains(estudanteId)) {
+                resultado.add(t);
+            }
+        }
+
+        if (resultado.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(resultado);
     }
 
     @GetMapping("/health")
