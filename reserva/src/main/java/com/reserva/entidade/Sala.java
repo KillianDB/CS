@@ -25,4 +25,20 @@ public class Sala {
         this.codigo = codigo;
         this.tipo = tipo;
     }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public TipoSala getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoSala tipo) {
+        this.tipo = tipo;
+    }
 }
