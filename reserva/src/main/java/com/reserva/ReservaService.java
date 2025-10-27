@@ -22,7 +22,8 @@ public class ReservaService {
     private final PerifericoRepository perifericoRepository;
 
     @Autowired
-    public ReservaService(ReservaRepository reservaRepository, SalaRepository salaRepository, PerifericoRepository perifericoRepository) {
+    public ReservaService(ReservaRepository reservaRepository, SalaRepository salaRepository,
+            PerifericoRepository perifericoRepository) {
         this.reservaRepository = reservaRepository;
         this.salaRepository = salaRepository;
         this.perifericoRepository = perifericoRepository;
@@ -40,6 +41,10 @@ public class ReservaService {
         } else {
             throw new IllegalArgumentException("Tipo de reserva inválido: " + tipo);
         }
+    }
+
+    public List<Reserva> findByCodigoContaining(String prefix) {
+        return reservaRepository.findByCodigoContaining(prefix);
     }
 
     public Optional<Reserva> findById(String codigo) {
@@ -126,7 +131,7 @@ public class ReservaService {
     }
 
     private int calcularProximo(String prefix) {
-        List<Reserva> existentes = reservaRepository.findByCodigoStartingWith(prefix);
+        List<Reserva> existentes = reservaRepository.findByCodigoContaining(prefix);
         int max = 0;
         for (Reserva r : existentes) {
             String s = r.getCodigo();

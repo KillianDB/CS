@@ -21,6 +21,11 @@ public class Reserva {
     @NotBlank(message = "Data é obrigatória")
     private String data;
 
+    @Column(nullable = false)
+    @NotBlank(message = "Status de reserva é obrigatório")
+    @Enumerated(EnumType.STRING)
+    private StatusReserva status;
+
     public Reserva() {
     }
 
@@ -28,6 +33,7 @@ public class Reserva {
         this.codigo = codigo;
         this.hora = hora;
         this.data = data;
+        this.status = StatusReserva.PENDENTE;
     }
 
     public String getCodigo() {
@@ -54,12 +60,21 @@ public class Reserva {
         this.data = data;
     }
 
+    public StatusReserva getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusReserva status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Reserva{" +
                 "codigo='" + codigo + '\'' +
                 ", hora='" + hora + '\'' +
                 ", data='" + data + '\'' +
+                ", status=" + status +
                 '}';
     }
 }
