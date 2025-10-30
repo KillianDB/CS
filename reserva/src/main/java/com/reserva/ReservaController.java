@@ -11,9 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.reserva.utils.TurmaDTO; 
+import java.util.Arrays; 
+import java.util.ArrayList; 
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/reservas")
@@ -23,6 +29,10 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
     private final AuthService authService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+    
 
     public ReservaController(ReservaService reservaService, AuthService authService) {
         this.reservaService = reservaService;
@@ -90,6 +100,62 @@ public class ReservaController {
         return ResponseEntity.ok(horario);
     }
 
+    @GetMapping("/aluno/{matricula}/laboratorios")
+    public ResponseEntity<ApiResponse<List<ReservaSala>>> buscarLaboratoriosDoAluno(
+            @PathVariable String matricula,
+            @RequestHeader(value = "Authorization") String authorization,
+            @RequestParam(value = "disciplina", required = false) String disciplina,
+            @RequestParam(value = "horario", required = false) String horario) {
+
+        try {
+            String alunoId = matricula;
+
+            String urlTurmas = "http://localhost:8082/turmas/aluno/" + alunoId; 
+
+            ResponseEntity<TurmaDTO[]> responseTurmas = restTemplate.getForEntity(urlTurmas, TurmaDTO[].class);
+            
+            if (!responseTurmas.getStatusCode().is2xxSuccessful() || responseTurmas.getBody() == null) {
+                return ResponseEntity.ok(ApiResponse.success(new ArrayList<>()));
+            }
+
+            List<TurmaDTO> turmasDoAluno = Arrays.asList(responseTurmas.getBody());
+
+            if (turmasDoAluno.isEmpty()) {
+                return ResponseEntity.ok(ApiResponse.success(new ArrayList<>()));
+            }
+
+            List<String> codigosDasTurmas = turmasDoAluno.stream()
+                                                    .map(TurmaDTO::getCodigo)
+                                                    .collect(Collectors.toList());
+
+            List<ReservaSala> reservas = reservaService.findReservasByCodigosTurma(codigosDasTurmas);
+
+            List<ReservaSala> reservasFiltradas = reservas.stream()
+                .filter(reserva -> {
+                    boolean matchHorario = (horario == null) || 
+                                           (reserva.getHora() != null && reserva.getHora().contains(horario)); 
+
+                    TurmaDTO turmaAssociada = turmasDoAluno.stream()
+                        .filter(t -> t.getCodigo().equals(reserva.getCodigoTurma()))
+                        .findFirst().orElse(null);
+
+                    boolean matchDisciplina = (disciplina == null) || 
+                                              (turmaAssociada != null && 
+                                               turmaAssociada.getNomeDisciplina() != null &&
+                                               turmaAssociada.getNomeDisciplina().contains(disciplina));
+
+                    return matchHorario && matchDisciplina;
+                })
+                .collect(Collectors.toList());
+
+            return ResponseEntity.ok(ApiResponse.success(reservasFiltradas));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.error("Erro ao buscar laboratórios: " + e.getMessage()));
+        }
+    }
+    
     @GetMapping("/health")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Reserva Service is running on port 8081");

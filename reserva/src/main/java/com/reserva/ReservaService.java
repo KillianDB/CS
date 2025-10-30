@@ -12,6 +12,7 @@ import com.reserva.repository.PerifericoRepository;
 import com.reserva.repository.ReservaRepository;
 import com.reserva.repository.SalaRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,8 @@ public class ReservaService {
     private final ReservaRepository reservaRepository;
     private final SalaRepository salaRepository;
     private final PerifericoRepository perifericoRepository;
+
+    
 
     @Autowired
     public ReservaService(ReservaRepository reservaRepository, SalaRepository salaRepository,
@@ -32,6 +35,7 @@ public class ReservaService {
     public List<Reserva> findAll() {
         return reservaRepository.findAll();
     }
+    
 
     public List<?> findAllByTipo(String tipoItem, String tipo) {
         if (tipoItem.equalsIgnoreCase("sala")) {
@@ -147,4 +151,14 @@ public class ReservaService {
         }
         return max + 1;
     }
+
+    public List<ReservaSala> findReservasByCodigosTurma(List<String> codigosTurma) {
+    if (codigosTurma == null || codigosTurma.isEmpty()) {
+        return new ArrayList<>(); 
+    }
+    
+    return reservaRepository.findByCodigoTurmaIn(codigosTurma);
+}
+
+
 }
