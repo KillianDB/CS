@@ -32,4 +32,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, String> {
 
         @Query("SELECT r FROM Reserva r WHERE r.codigo LIKE CONCAT('%', :prefix, '%')")
         List<Reserva> findByCodigoContaining(@Param("prefix") String prefix);
+
+        List<ReservaSala> findByCodigoTurmaIn(List<String> codigosTurma);
 }
