@@ -18,4 +18,27 @@ public class Sala {
     @Enumerated(EnumType.STRING)
     private TipoSala tipo;
 
+    public Sala() {
+    }
+
+    public Sala(String codigo, TipoSala tipo) {
+        this.codigo = codigo;
+        this.tipo = tipo;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public TipoSala getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoSala tipo) {
+        this.tipo = tipo;
+    }
 }

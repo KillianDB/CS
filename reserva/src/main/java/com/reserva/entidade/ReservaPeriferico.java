@@ -2,34 +2,54 @@ package com.reserva.entidade;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "reservas_perifericos")
+@Table(name = "reservas_salas")
 public class ReservaPeriferico extends Reserva {
 
-    @Id
-    @NotBlank(message = "Código do periférico é obrigatório")
-    @Size(min = 3, max = 30, message = "Código deve ter entre 3 e 30 caracteres")
-    private String codigo;
+    @Column(name = "codigo_professor", nullable = false)
+    @NotBlank(message = "Código do professor é obrigatório")
+    private String codigoProfessor;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Tipo de periférico é obrigatório")
+    @Column(name = "codigo_turma", nullable = false)
+    @NotBlank(message = "Código da turma é obrigatório")
+    private String codigoTurma;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "codigo_periferico", referencedColumnName = "codigo")
+    private Periferico periferico;
+
+    @Column(name = "tipo_periferico", nullable = false)
+    @NotBlank(message = "Tipo de periferico é obrigatório")
     @Enumerated(EnumType.STRING)
     private TipoPeriferico tipo;
 
-    public ReservaPeriferico(String codigoProfessor, String codigoSala, String codigoPeriferico, TipoPeriferico tipo) {
-        super();
-        this.codigo = codigoProfessor + codigoSala + codigoPeriferico;
-        this.tipo = tipo;
+    public ReservaPeriferico(String codigoProfessor, String codigoTurma, String hora, String data,
+            Periferico periferico) {
+        super(codigoProfessor + codigoTurma + data, hora, data);
+        this.codigoProfessor = codigoProfessor;
+        this.codigoTurma = codigoTurma;
+        this.periferico = periferico;
+        this.tipo = periferico.getTipo();
     }
 
-    public String getCodigo() {
-        return codigo;
+    public ReservaPeriferico() {
     }
 
-    public void setCodigo(String codigoProfessor, String codigoSala, String codigoPeriferico) {
-        this.codigo = codigoProfessor + codigoSala + codigoPeriferico;
+    public String getCodigoProfessor() {
+        return codigoProfessor;
+    }
+
+    public void setCodigoProfessor(String codigoProfessor) {
+        this.codigoProfessor = codigoProfessor;
+    }
+
+    public String getCodigoTurma() {
+        return codigoTurma;
+    }
+
+    public void setCodigoTurma(String codigoTurma) {
+        this.codigoTurma = codigoTurma;
     }
 
     public TipoPeriferico getTipo() {
@@ -38,5 +58,13 @@ public class ReservaPeriferico extends Reserva {
 
     public void setTipo(TipoPeriferico tipo) {
         this.tipo = tipo;
+    }
+
+    public Periferico getPeriferico() {
+        return periferico;
+    }
+
+    public void setPeriferico(Periferico periferico) {
+        this.periferico = periferico;
     }
 }

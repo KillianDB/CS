@@ -9,10 +9,11 @@ import com.turma.entidade.Turma;
 
 @Repository
 public interface TurmaRepository extends JpaRepository<Turma, String> {
-
     String findHorarioByCodigo(String codigo);
 
     boolean existsByCodigo(String codigo);
 
     List<Turma> findByCodigoIn(List<String> codigos);
+
+    List<Turma> findByEstudantesContaining(String estudanteId);
 }

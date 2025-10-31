@@ -1,47 +1,52 @@
 Microsserviços Usuario, Turma e Reserva - refazendo o SARC da PUCRS (Trabalho da disciplina de Construção de Software)
 
 Este projeto consiste em três microsserviços Spring Boot:
-- *Turma Service* - Gerencia turmas e disciplinas (porta 8081)
-- *Usuario Service* - Gerencia estudantes, professores e administradores (porta 8082)
-- *Reserva Service* - Gerencia reservas de salas e de perifericos (porta 8083)
+
+- _Turma Service_ - Gerencia turmas e disciplinas (porta 8081)
+- _Usuario Service_ - Gerencia estudantes, professores e administradores (porta 8082)
+- _Reserva Service_ - Gerencia reservas de salas e de perifericos (porta 8083)
 
 Ambos os microsserviços utilizam:
+
 - Java 17
 - Spring Boot 3.1.5
 - Spring Data JPA
 - Banco de dados H2 (em memória)
 - Docker para containerização
-  
 
 ## Modelagem lógica BD
 
-<img width="1049" height="573" alt="image" src="https://github.com/user-attachments/assets/5787921f-4b7a-441c-a603-93cd2240e011" />
-
+<img width="1196" height="561" alt="image" src="https://github.com/user-attachments/assets/c5cf8ad9-1feb-43ff-be64-e9f7bb3c06e0" />
 
 ## Como executar
 
 ### Pré-requisitos
+
 - Docker
 - Docker Compose
 
 ### Executando com Docker Compose
 
-1. *Build e executar todos os serviços:*
+1. _Build e executar todos os serviços:_
+
 ```bash
 docker-compose up -d --build
 ```
 
-2. *Parar os serviços:*
+2. _Parar os serviços:_
+
 ```bash
 docker-compose down
 ```
 
-3. *Ver logs de todos os serviços:*
+3. _Ver logs de todos os serviços:_
+
 ```bash
 docker-compose logs -f
 ```
 
-4. *Ver logs de serviços específicos:*
+4. _Ver logs de serviços específicos:_
+
 ```bash
 docker-compose logs -f turma-service
 docker-compose logs -f usuario-service
@@ -50,21 +55,24 @@ docker-compose logs -f reserva-service
 
 ### Executando individualmente
 
-*Turma Service:*
+_Turma Service:_
+
 ```bash
 cd turma
 docker build -t turma-service .
 docker run -p 8081:8081 turma-service
 ```
 
-*Usuario Service:*
+_Usuario Service:_
+
 ```bash
 cd usuario
 docker build -t usuario-service .
 docker run -p 8082:8082 usuario-service
 ```
 
-*Reserva Service:*
+_Reserva Service:_
+
 ```bash
 cd reversa
 docker build -t reserva-service .
@@ -75,7 +83,7 @@ docker run -p 8083:8083 reserva-service
 
 ### Turma Service (porta 8081)
 
-*Base URL:* `http://localhost:8081/turmas`
+_Base URL:_ `http://localhost:8081/turmas`
 
 - `GET /turmas/codigo/{codigo}` - Buscar turma por código
 - `POST /turmas` - Criar nova turma
@@ -87,16 +95,16 @@ docker run -p 8083:8083 reserva-service
 
 ### Usuario Service (porta 8082)
 
-*Base URL:* `http://localhost:8082/usuarios`
+_Base URL:_ `http://localhost:8082/usuarios`
 
 - `GET /usuarios/matricula/{matricula}` - Buscar usuario por matrícula
 - `GET /usuarios/nome/{nome}` - Buscar usuario por nome
 - `POST /usuarios` - Criar novo usuario
 - `GET /usuarios/health` - Health check usuario
-  
+
 ### Reserva Service (porta 8083)
 
-*Base URL:* `http://localhost:8083/reservas`
+_Base URL:_ `http://localhost:8083/reservas`
 
 - `GET /reservas/codigo/{codigo}` - Buscar reserva por codigo
 - `GET /reservas/horario/{horario}` - Buscar reserva por horario
@@ -107,11 +115,12 @@ docker run -p 8083:8083 reserva-service
 
 Para acessar o console do banco H2 para debugging:
 
-- *Turma Service:* http://localhost:8081/h2-console
-- *Usuario Service:* http://localhost:8082/h2-console
-- *Reserva Service:* http://localhost:8083/h2-console
+- _Turma Service:_ http://localhost:8081/h2-console
+- _Usuario Service:_ http://localhost:8082/h2-console
+- _Reserva Service:_ http://localhost:8083/h2-console
 
-*Configurações de conexão:*
+_Configurações de conexão:_
+
 - JDBC URL: `jdbc:h2:mem:turma_db` (ou `usuario_db`, ou `reserva_db`)
 - Username: `sa`
 - Password: (deixar em branco)
@@ -119,6 +128,7 @@ Para acessar o console do banco H2 para debugging:
 ## Exemplos de uso
 
 ### Criar uma disciplina
+
 ```bash
 curl -X POST http://localhost:8081/disciplinas \
   -H "Content-Type: application/json" \
@@ -129,6 +139,7 @@ curl -X POST http://localhost:8081/disciplinas \
 ```
 
 ### Criar um estudante
+
 ```bash
 curl -X POST http://localhost:8082/usuarios \
   -H "Content-Type: application/json" \
@@ -142,6 +153,7 @@ curl -X POST http://localhost:8082/usuarios \
 ```
 
 ### Adicionar estudante a uma turma
+
 ```bash
 curl -X POST http://localhost:8081/turmas/CS101/estudante/1
 ```
@@ -153,7 +165,7 @@ curl -X POST http://localhost:8081/turmas/CS101/estudante/1
 │  Turma Service      │    │    Usuario Service  │  |  Reserva Service    |
 │     (Port 8081)     │    │     (Port 8082)     │  |   (Port 8083)       |
 ├─────────────────────┤    ├─────────────────────┤  ├─────────────────────┤
-│  REST Controller    │    │  REST Controller    │  │  REST Controller    │  
+│  REST Controller    │    │  REST Controller    │  │  REST Controller    │
 │  Service Layer      │    │  Service Layer      │  │  Service Layer      │
 │  Repository (JPA)   │    │  Repository (JPA)   │  │  Repository (JPA)   │
 │  H2 Database        │    │  H2 Database        │  │  H2 Database        │
@@ -187,6 +199,8 @@ CS/
 │   │   │   │           │   └── TipoPeriferico.java
 │   │   │   │           └── repository
 │   │   │   │               └── ReservaRepository.java
+│   │   │   │           └── utils
+│   │   │   │               └── ApiResponse.java
 │   │   │   └── resources
 │   │   │       └── application.properties
 │   │   └── test
@@ -220,6 +234,8 @@ CS/
 │   │   │   │           └── repository
 │   │   │   │               └── DisciplinaRepository.java
 │   │   │   │               └── TurmaRepository.java
+│   │   │   │           └── utils
+│   │   │   │               └── ApiResponse.java
 │   │   │   └── resources
 │   │   │       └── application.properties
 │   │   └── test
@@ -250,6 +266,8 @@ CS/
 │   │   │   │           │   └── TipoUsuario.java
 │   │   │   │           └── repository
 │   │   │   │               └── UsuarioRepository.java
+│   │   │   │           └── utils
+│   │   │   │               └── ApiResponse.java
 │   │   │   └── resources
 │   │   │       └── application.properties
 │   │   └── test
@@ -269,15 +287,17 @@ CS/
 
 ## Resolução de problemas comuns
 
-1. *Porta já em uso:*
+1. _Porta já em uso:_
+
    - Verifique se as portas 8081 e 8082 estão livres
    - Use `netstat -an | findstr "8081"` para verificar
 
-2. *Erro de build do Docker:*
+2. _Erro de build do Docker:_
+
    - Certifique-se de que o Docker está executando
    - Tente limpar o cache: `docker system prune -a`
 
-3. *Aplicação não responde:*
+3. _Aplicação não responde:_
    - Verifique os logs: `docker-compose logs -f`
    - Verifique os health checks: `docker ps`
 
@@ -286,12 +306,13 @@ CS/
 Para desenvolvimento local sem Docker:
 
 1. Execute cada aplicação Spring Boot diretamente:
+
 ```bash
 # Terminal 1 - Turma Service
 cd turma
 mvn spring-boot:run
 
-# Terminal 2 - Usuario Service  
+# Terminal 2 - Usuario Service
 cd usuario
 mvn spring-boot:run
 
@@ -300,4 +321,4 @@ cd reserva
 mvn spring-boot:run
 ```
 
-Os serviços estarão disponíveis nas mesmas portas (8081, 8082 e  8083).
+Os serviços estarão disponíveis nas mesmas portas (8081, 8082 e 8083).

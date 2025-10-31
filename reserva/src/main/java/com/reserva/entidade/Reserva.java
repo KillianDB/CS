@@ -21,18 +21,19 @@ public class Reserva {
     @NotBlank(message = "Data é obrigatória")
     private String data;
 
-    @Column(name = "turma_id")
-    @NotBlank(message = "Turma é obrigatória")
-    private String idTurma;
+    @Column(nullable = false)
+    @NotBlank(message = "Status de reserva é obrigatório")
+    @Enumerated(EnumType.STRING)
+    private StatusReserva status;
 
     public Reserva() {
     }
 
-    public Reserva(String codigo, String hora, String data, String idTurma) {
+    public Reserva(String codigo, String hora, String data) {
         this.codigo = codigo;
         this.hora = hora;
         this.data = data;
-        this.idTurma = idTurma;
+        this.status = StatusReserva.PENDENTE;
     }
 
     public String getCodigo() {
@@ -59,12 +60,12 @@ public class Reserva {
         this.data = data;
     }
 
-    public String getIdTurma() {
-        return idTurma;
+    public StatusReserva getStatus() {
+        return status;
     }
 
-    public void setIdTurma(String idTurma) {
-        this.idTurma = idTurma;
+    public void setStatus(StatusReserva status) {
+        this.status = status;
     }
 
     @Override
@@ -73,7 +74,7 @@ public class Reserva {
                 "codigo='" + codigo + '\'' +
                 ", hora='" + hora + '\'' +
                 ", data='" + data + '\'' +
-                ", idTurma='" + idTurma + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

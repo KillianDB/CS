@@ -81,6 +81,17 @@ public class TurmaController {
         return ResponseEntity.ok(horario);
     }
 
+
+    @GetMapping("/aluno/{estudanteId}")
+    public ResponseEntity<List<Turma>> buscarTurmasPorEstudante(@PathVariable String estudanteId) {
+        try {
+            List<Turma> turmas = turmaRepository.findByEstudantesContaining(estudanteId);
+            return ResponseEntity.ok(turmas);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null); 
+        }
+    }
+
     @GetMapping("/health")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Turma Service is running on port 8081");
