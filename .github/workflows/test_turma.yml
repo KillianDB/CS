@@ -1,0 +1,54 @@
+name: Build and Analyze (SonarQube in GitHub Actions)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      sonarqube:
+        image: sonarqube:lts-community
+        ports:
+          - 9000:9000
+        options: >-
+          --health-cmd="curl -f http://localhost:9000/api/system/status || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      SONAR_HOST_URL: http://localhost:9000
+      SONAR_LOGIN: admin
+      SONAR_PASSWORD: admin
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for SonarQube to be ready
+        run: |
+          echo "Waiting for SonarQube to start..."
+          for i in {1..60}; do
+            STATUS=$(curl -s http://localhost:9000/api/system/status | jq -r .status || echo "")
+            if [ "$STATUS" == "UP" ]; then
+              echo "SonarQube is UP!"
+              break
+            fi
+            echo "Still waiting... ($i/60)"
+            sleep 5
+          done
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build turma-service
+        working-directory: ./turma
+        run: mvn -B clean verify
+
+      - name: Run SonarQube analysis
+        working-directory: ./turma
+        run: mvn sonar:sonar
