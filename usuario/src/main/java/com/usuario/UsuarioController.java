@@ -2,6 +2,9 @@ package com.usuario;
 
 import com.usuario.entidade.Usuario;
 import com.usuario.repository.UsuarioRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +17,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/usuarios")
 @CrossOrigin(origins = "*")
+@Tag(name = "Usuários", description = "Endpoints para gerenciamento de usuários")
 public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @GetMapping("/matricula/{matricula}")
+    @Operation(summary = "Busca um usuário por ID")
+    @ApiResponse(responseCode = "200", description = "Matrícula encontrada")
+    @ApiResponse(responseCode = "404", description = "Matrícula não encontrada")
     public ResponseEntity<Usuario> buscarPorMatricula(@PathVariable String matricula) {
         Optional<Usuario> usuario = usuarioRepository.findByMatricula(matricula);
         return usuario.map(ResponseEntity::ok)
