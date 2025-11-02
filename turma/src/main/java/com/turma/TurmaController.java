@@ -1,5 +1,6 @@
 package com.turma;
 
+import com.turma.dto.TurmaDTO;
 import com.turma.entidade.Turma;
 import com.turma.repository.TurmaRepository;
 import com.turma.service.TurmaService;
@@ -32,8 +33,24 @@ public class TurmaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/codigo/{codigo}/calendario")
+    public ResponseEntity<?> atualizaCalendario(@PathVariable String codigo, @RequestBody String horario){
+        try{
+            turmaService.atualizaCalendario(codigo, horario);
+            Optional<String> horarioAtualizado = turmaRepository.findHorarioByCodigo(codigo);
+
+            if(horarioAtualizado.isPresent()){
+                return ResponseEntity.ok(horarioAtualizado.get());
+            }
+
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @PostMapping
-    public ResponseEntity<?> criarTurma(@Valid @RequestBody Turma turma) {
+    public ResponseEntity<?> criarTurma(@Valid @RequestBody TurmaDTO turma) {
         try {
             String turmaSalva = turmaService.criaTurma(turma);
             return ResponseEntity.status(HttpStatus.CREATED).body(turmaSalva);
@@ -65,32 +82,35 @@ public class TurmaController {
     }
 
     @PostMapping("/estudantes/")
-    public ResponseEntity<?> adicionarEstudanteArquivo(@RequestParam("file") MultipartFile file){
-        try{
+    public ResponseEntity<?> adicionarEstudanteArquivo(@RequestParam("file") MultipartFile file) {
+        try {
             turmaService.addAlunos(file);
 
             return ResponseEntity.ok().body("Estudantes Cadastrados");
-        } catch (Exception e){ 
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao fazer upload do arquivo: " + e.getMessage());
         }
     }
 
     @GetMapping("/codigo/{codigo}/horario")
     public ResponseEntity<String> buscarHorarioDaTurma(@PathVariable String codigo) {
-        String horario = turmaRepository.findHorarioByCodigo(codigo);
-        return ResponseEntity.ok(horario);
-    }
-
-
-    @GetMapping("/aluno/{estudanteId}")
-    public ResponseEntity<List<Turma>> buscarTurmasPorEstudante(@PathVariable String estudanteId) {
-        try {
-            List<Turma> turmas = turmaRepository.findByEstudantesContaining(estudanteId);
-            return ResponseEntity.ok(turmas);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null); 
+        Optional<String> horario = turmaRepository.findHorarioByCodigo(codigo);
+        if(horario.isEmpty()){
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(horario.get());
     }
+
+    // @GetMapping("/aluno/{estudanteId}")
+    // public ResponseEntity<List<Turma>> buscarTurmasPorEstudante(@PathVariable
+    // String estudanteId) {
+    // try {
+    // List<Turma> turmas = turmaRepository.findByEstudantesContaining(estudanteId);
+    // return ResponseEntity.ok(turmas);
+    // } catch (Exception e) {
+    // return ResponseEntity.badRequest().body(null);
+    // }
+    // }
 
     @GetMapping("/health")
     public ResponseEntity<String> health() {
