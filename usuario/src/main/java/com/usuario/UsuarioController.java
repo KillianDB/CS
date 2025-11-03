@@ -34,12 +34,16 @@ public class UsuarioController {
     }
 
     @GetMapping("/nome/{nome}")
+    @Operation(summary = "Buscar um usuário por nome")
+    @ApiResponse(responseCode = "200", description = "Usuário encontrado")
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     public ResponseEntity<List<Usuario>> buscarPorNome(@PathVariable String nome) {
         List<Usuario> usuarios = usuarioRepository.findByNomeContainingIgnoreCase(nome);
         return ResponseEntity.ok(usuarios);
     }
 
     @PostMapping
+    @Operation(summary = "Criar novo usuário")
     public ResponseEntity<?> criarUsuario(@Valid @RequestBody Usuario usuario) {
         try {
             if (usuario.getMatricula() != null && 
@@ -63,6 +67,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/health")
+    @Operation (summary = "Halth check usuário")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Usuário Service is running on port 8082");
     }

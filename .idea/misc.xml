@@ -4,13 +4,11 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/turma/pom.xml" />
-        <option value="$PROJECT_DIR$/reserva/pom.xml" />
-        <option value="$PROJECT_DIR$/usuario/pom.xml" />
+        <option value="$PROJECT_DIR$/estudante/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="21" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21_PREVIEW" project-jdk-name="21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
