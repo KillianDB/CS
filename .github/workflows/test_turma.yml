@@ -1,4 +1,4 @@
-name: SonarQube Turmas
+name: SonarQube Analysis Turmas
 
 on:
   push:
@@ -8,43 +8,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      sonarqube:
-        image: sonarqube:lts-community
-        ports:
-          - 9000:9000
-        env:
-          SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: true
-          SONAR_FORCEAUTHENTICATION: false
-        options: >-
-          --memory=2g
-          --health-cmd="curl -f http://localhost:9000/api/system/status || exit 1"
-          --health-interval=30s
-          --health-timeout=10s
-          --health-retries=20
-          --health-start-period=120s
-
-    env:
-      SONAR_HOST_URL: http://localhost:9000
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Required for SonarQube analysis
-
-      - name: Wait for SonarQube to be ready
-        run: |
-          echo "Waiting for SonarQube to start..."
-          for i in {1..120}; do
-            if curl -s http://localhost:9000/api/system/status | grep -q '"status":"UP"'; then
-              echo "SonarQube is UP and ready!"
-              break
-            fi
-            echo "Still waiting... ($i/120) - SonarQube takes 2-5 minutes to start"
-            sleep 5
-          done
-          # Final check
-          curl -f http://localhost:9000/api/system/status || exit 1
+          fetch-depth: 0
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -53,16 +21,21 @@ jobs:
           java-version: "21"
           cache: "maven"
 
-      - name: Build with Maven
-        working-directory: ./turma
-        run: mvn -B clean verify
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
-      - name: SonarQube Scan
-        working-directory: ./turma
-        run: |
-          mvn -B sonar:sonar \
-            -Dsonar.projectKey=turma-service \
-            -Dsonar.projectName='Turma Service' \
-            -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.login=admin \
-            -Dsonar.password=admin
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=guilhermevsam_cs
