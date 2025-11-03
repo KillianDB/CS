@@ -1,4 +1,4 @@
-name: Build and Analyze (SonarQube in GitHub Actions)
+name: SonarQube Turmas
 
 on:
   push:
