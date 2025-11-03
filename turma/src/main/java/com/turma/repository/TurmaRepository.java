@@ -21,5 +21,6 @@ public interface TurmaRepository extends JpaRepository<Turma, String> {
 
     List<Turma> findByCodigoIn(List<String> codigos);
 
-    // List<Turma> findByEstudantesContaining(String estudanteId);
+    @Query("SELECT t FROM Turma t JOIN t.estudantes e WHERE e.id = :estudanteId")
+    List<Turma> findTurmasByEstudante(String estudanteId);
 }
