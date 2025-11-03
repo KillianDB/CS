@@ -2,7 +2,9 @@ name: SonarQube Analysis Turmas
 
 on:
   push:
+    branches: [main, develop]
   pull_request:
+    branches: [main]
 
 jobs:
   build:
@@ -24,18 +26,24 @@ jobs:
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
-          path: ~/turmas/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar-turma-${{ hashFiles('turma/pom.xml') }}
+          restore-keys: ${{ runner.os }}-sonar-turma-
 
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
-          path: ~/turmas/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('./turmas/**/pom.xml') }}
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('turma/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Build and analyze
+      - name: Build and analyze turma service
+        working-directory: ./turma
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=guilhermevsam_cs
+        run: |
+          mvn -B clean verify
+          mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=guilhermevsam_cs_turma \
+            -Dsonar.projectName="Turma Service" \
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
