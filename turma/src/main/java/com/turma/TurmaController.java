@@ -33,7 +33,7 @@ public class TurmaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/codigo/{codigo}/calendario")
+    @PostMapping("/codigo/{codigo}/calendario/")
     public ResponseEntity<?> atualizaCalendario(@PathVariable String codigo, @RequestBody String horario){
         try{
             turmaService.atualizaCalendario(codigo, horario);
