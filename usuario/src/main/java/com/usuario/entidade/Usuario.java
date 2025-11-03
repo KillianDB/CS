@@ -77,6 +77,10 @@ public class Usuario {
         this.senha = senha;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
     public String getTipoUsuario() {
         return tipoUsuario != null ? tipoUsuario.name() : null;
     }
