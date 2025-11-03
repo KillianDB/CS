@@ -3,8 +3,11 @@ package com.turma.entidade;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableMap;
 
 @Entity
 @Table(name = "turmas")
