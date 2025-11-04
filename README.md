@@ -1,3 +1,5 @@
+Nomes: Antônio Pereira, Felipe Seelend, Guilherme Velho, Killian Batista, Victor Machado
+
 Microsserviços Usuario, Turma e Reserva - refazendo o SARC da PUCRS (Trabalho da disciplina de Construção de Software)
 
 Este projeto consiste em três microsserviços Spring Boot:
