@@ -1,3 +1,5 @@
+Nomes: Antônio Pereira, Felipe Seelend, Guilherme Velho, Killian Batista, Victor Machado
+
 Microsserviços Usuario, Turma e Reserva - refazendo o SARC da PUCRS (Trabalho da disciplina de Construção de Software)
 
 Este projeto consiste em três microsserviços Spring Boot:
@@ -87,11 +89,14 @@ _Base URL:_ `http://localhost:8081/turmas`
 
 - `GET /turmas/codigo/{codigo}` - Buscar turma por código
 - `POST /turmas` - Criar nova turma
+- `POST /disciplinas` - Criar nova disciplina
 - `POST /turmas/codigo/{codigo}/estudantes/{estudanteId}` - Adicionar estudante à turma
 - `POST /turmas/estudantes/` - Adicionar estudantes com arquivo .csv ou .xlsx (formato: turma,codAluno)
 - `POST /codigo/{codigo}/calendario/` - Atualiza o horário da turma (body: "horario":"LM")
 - `GET /disciplinas/nome/{nome}` - Buscar disciplinas por nome
 - `GET /turmas/codigo/{codigo}/horario` - Buscar horário da turma por código
+- `GET /disciplinas/codigo/{codigo}` - Busca disciplina pelo código
+- `GET /turmas/aluno/{estudanteId}` - Busca turmas por estudante
 - `GET /disciplinas/health` - Health check disciplina
 - `GET /turmas/health` - Health check turma
 
@@ -110,7 +115,13 @@ _Base URL:_ `http://localhost:8083/reservas`
 
 - `GET /reservas/codigo/{codigo}` - Buscar reserva por codigo
 - `GET /reservas/horario/{horario}` - Buscar reserva por horario
+- `GET /reservas/items/tipo` - Buscar todos os itens por tipo
+- `GET /reservas/usuario` - Buscar reservas por usuário
+- `GET /reservas/codigo/{codigo}` - Buscar reserva por código
+- `GET /reservas/codigo/{codigo}/horario` - Busca horário da reserva pelo código
+- `GET /reservas/aluno/{matricula}/laboratorios` -Buscar laboratórios reservados por aluno
 - `POST /reservas` - Criar nova reserva
+- `POST /reservas/periferico` - Criar nova reserva de periférico
 - `GET /reservas/health` - Health check reservas
 
 ## Console H2

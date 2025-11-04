@@ -27,6 +27,9 @@ public class TurmaController {
     private TurmaService turmaService;
 
     @GetMapping("/codigo/{codigo}")
+    @Operation(summary = "Busca turma pelo código")
+    @ApiResponse(responseCode = "200", description = "Turma encontrada")
+    @ApiResponse(responseCode = "404", description = "Turma não encontrada")
     public ResponseEntity<Turma> buscarPorCodigo(@PathVariable String codigo) {
         Optional<Turma> turma = turmaRepository.findById(codigo);
         return turma.map(ResponseEntity::ok)
@@ -50,6 +53,9 @@ public class TurmaController {
     }
 
     @PostMapping
+    @Operation(summary = "Criar nova turma")
+    @ApiResponse(responseCode = "201", description = "Turma criada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Erro ao criar turma")
     public ResponseEntity<?> criarTurma(@Valid @RequestBody TurmaDTO turma) {
         try {
             String turmaSalva = turmaService.criaTurma(turma);
@@ -61,6 +67,9 @@ public class TurmaController {
     }
 
     @PostMapping("/codigo/{codigo}/estudantes/{estudanteId}")
+    @Operation(summary = "Adicionar estudante à turma")
+    @ApiResponse(responseCode = "200", description = "Estudante adicionado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Turma não encontrada")
     public ResponseEntity<?> adicionarEstudante(@PathVariable String codigo,
             @PathVariable String estudanteId) {
         try {
@@ -93,6 +102,9 @@ public class TurmaController {
     }
 
     @GetMapping("/codigo/{codigo}/horario")
+    @Operation(summary = "Busca horário da turma pelo código")
+    @ApiResponse(responseCode = "200", description = "Horário encontrado")
+    @ApiResponse(responseCode = "404", description = "Turma não encontrada")
     public ResponseEntity<String> buscarHorarioDaTurma(@PathVariable String codigo) {
         Optional<String> horario = turmaRepository.findHorarioByCodigo(codigo);
         if(horario.isEmpty()){
@@ -101,17 +113,23 @@ public class TurmaController {
         return ResponseEntity.ok(horario.get());
     }
 
+
     @GetMapping("/aluno/{estudanteId}")
+    @Operation(summary = "Busca turmas por estudante")
+    @ApiResponse(responseCode = "200", description = "Turmas encontradas")
+    @ApiResponse(responseCode = "404", description = "Estudante não encontrado")
     public ResponseEntity<List<Turma>> buscarTurmasPorEstudante(@PathVariable String estudanteId) {
         try {
             List<Turma> turmas = turmaRepository.findTurmasByEstudante(estudanteId);
             return ResponseEntity.ok(turmas);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(null); 
         }
     }
 
     @GetMapping("/health")
+    @Operation(summary = "Health check turma")
+    @ApiResponse(responseCode = "200", description = "Serviço está funcionando")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Turma Service is running on port 8081");
     }
