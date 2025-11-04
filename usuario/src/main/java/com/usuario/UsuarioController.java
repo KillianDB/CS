@@ -67,7 +67,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/health")
-    @Operation (summary = "Halth check usuário")
+    @Operation (summary = "Health check usuário")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Usuário Service is running on port 8082");
     }

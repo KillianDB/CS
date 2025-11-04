@@ -40,6 +40,9 @@ public class ReservaController {
     }
 
     @PostMapping("/sala")
+    @Operation(summary = "Criar nova reserva")
+    @ApiResponse(responseCode = "201", description = "Reserva de sala criada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Erro ao criar reserva de sala")
     public ResponseEntity<ApiResponse<ReservaSala>> criarReservaSala(
             @RequestHeader(value = "Authorization", required = false) String authorization,
             @Valid @RequestBody ReservaSala reserva) {
@@ -57,6 +60,9 @@ public class ReservaController {
     }
 
     @PostMapping("/periferico")
+    @Operation(summary = "Criar nova reserva de periférico")
+    @ApiResponse(responseCode = "201", description = "Reserva de periférico criada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Erro ao criar reserva de periférico")
     public ResponseEntity<ApiResponse<ReservaPeriferico>> criarReservaPeriferico(
             @RequestHeader(value = "Authorization", required = false) String authorization,
             @Valid @RequestBody ReservaPeriferico reserva) {
@@ -74,12 +80,18 @@ public class ReservaController {
     }
 
     @GetMapping("/items/tipo")
+    @Operation(summary = "Buscar todos os itens por tipo")
+    @ApiResponse(responseCode = "200", description = "Itens encontrados")
+    @ApiResponse(responseCode = "404", description = "Itens não encontrados")
     public ResponseEntity<List<?>> buscarTodosItemsPorTipo(@RequestParam String tipoItem, @RequestParam String tipo) {
         List<?> reservas = reservaService.findAllByTipo(tipoItem, tipo);
         return ResponseEntity.ok(reservas);
     }
 
     @GetMapping("/usuario")
+    @Operation(summary = "Buscar reservas por usuário")
+    @ApiResponse(responseCode = "200", description = "Reservas encontradas")
+    @ApiResponse(responseCode = "404", description = "Reservas não encontradas")
     public ResponseEntity<List<Reserva>> buscarReservasPorUsuario(
             @RequestParam(value = "prefix", required = true) String prefix,
             @RequestParam(value = "tipo", required = false) String tipo) {
@@ -88,6 +100,9 @@ public class ReservaController {
     }
 
     @GetMapping("/codigo/{codigo}")
+    @Operation(summary = "Buscar reserva por código")
+    @ApiResponse(responseCode = "200", description = "Reserva encontrada")
+    @ApiResponse(responseCode = "404", description = "Reserva não encontrada")
     public ResponseEntity<Reserva> buscarPorCodigo(@PathVariable String codigo) {
         Optional<Reserva> reserva = reservaService.findById(codigo);
         return reserva.map(ResponseEntity::ok)
@@ -95,12 +110,18 @@ public class ReservaController {
     }
 
     @GetMapping("/codigo/{codigo}/horario")
+    @Operation(summary = "Busca horário da reserva pelo código")
+    @ApiResponse(responseCode = "200", description = "Horário encontrado")
+    @ApiResponse(responseCode = "404", description = "Reserva não encontrada")
     public ResponseEntity<String> buscarHorarioDaReserva(@PathVariable String codigo) {
         String horario = reservaService.findHorarioByCodigo(codigo);
         return ResponseEntity.ok(horario);
     }
 
     @GetMapping("/aluno/{matricula}/laboratorios")
+    @Operation(summary = "Buscar laboratórios reservados por aluno")
+    @ApiResponse(responseCode = "200", description = "Laboratórios encontrados")
+    @ApiResponse(responseCode = "404", description = "Laboratórios não encontrados")
     public ResponseEntity<ApiResponse<List<ReservaSala>>> buscarLaboratoriosDoAluno(
             @PathVariable String matricula,
             @RequestHeader(value = "Authorization") String authorization,
@@ -157,6 +178,8 @@ public class ReservaController {
     }
     
     @GetMapping("/health")
+    @Operation(summary = "Health check reservas")
+    @ApiResponse(responseCode = "200", description = "Serviço está funcionando")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Reserva Service is running on port 8081");
     }

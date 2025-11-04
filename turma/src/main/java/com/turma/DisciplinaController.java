@@ -20,6 +20,9 @@ public class DisciplinaController {
     private DisciplinaRepository disciplinaRepository;
 
     @GetMapping("/codigo/{codigo}")
+    @Operation(summary = "Busca disciplina pelo código")
+    @ApiResponse(responseCode = "200", description = "Disciplina encontrada")
+    @ApiResponse(responseCode = "404", description = "Disciplina não encontrada")
     public ResponseEntity<Disciplina> buscarPorCodigo(@PathVariable String codigo) {
         Optional<Disciplina> disciplina = disciplinaRepository.findById(codigo);
         return disciplina.map(ResponseEntity::ok)
@@ -27,6 +30,9 @@ public class DisciplinaController {
     }
 
     @PostMapping
+    @Operation(summary = "Criar nova disciplina")
+    @ApiResponse(responseCode = "201", description = "Disciplina criada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Erro ao criar disciplina")
     public ResponseEntity<?> criarDisciplina(@Valid @RequestBody Disciplina disciplina) {
         try {
             if (disciplinaRepository.existsByCodigo(disciplina.getCodigo())) {
@@ -43,12 +49,17 @@ public class DisciplinaController {
     }
 
     @GetMapping("/nome/{nome}")
+    @Operation(summary = "Busca disciplinas pelo nome")
+    @ApiResponse(responseCode = "200", description = "Disciplinas encontradas")
+    @ApiResponse(responseCode = "404", description = "Disciplina não encontrada")
     public ResponseEntity<List<Disciplina>> buscarPorNome(@PathVariable String nome) {
         List<Disciplina> disciplinas = disciplinaRepository.findByNomeContainingIgnoreCase(nome);
         return ResponseEntity.ok(disciplinas);
     }
 
     @GetMapping("/health")
+    @Operation(summary = "Health check disciplina")
+    @ApiResponse(responseCode = "200", description = "Serviço está funcionando")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Disciplina Service is running on port 8081");
     }
