@@ -90,6 +90,8 @@ _Base URL:_ `http://localhost:8081/turmas`
 - `GET /turmas/codigo/{codigo}` - Buscar turma por código
 - `POST /turmas` - Criar nova turma
 - `POST /turmas/codigo/{codigo}/estudantes/{estudanteId}` - Adicionar estudante à turma
+- `POST /turmas/estudantes/` - Adicionar estudantes com arquivo .csv ou .xlsx (formato: turma,codAluno)
+- `POST /codigo/{codigo}/calendario/` - Atualiza o horário da turma (body: "horario":"LM")
 - `GET /disciplinas/nome/{nome}` - Buscar disciplinas por nome
 - `GET /turmas/codigo/{codigo}/horario` - Buscar horário da turma por código
 - `GET /disciplinas/health` - Health check disciplina
