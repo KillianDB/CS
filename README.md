@@ -21,8 +21,60 @@ Além dos microserviços, o projeto também conta com algumas tecnologias:
 - _API Gateway_ - Ponto único de entrada que roteia requisições para os microserviços.
 - _Spring Cloud Server_ - Centraliza as configurações de todos os serviços em um único lugar.
 - _Eureka_ - Registro de serviços que permite descobrir e se comunicar com microserviços dinamicamente.
+- _Prometheus_ (Port 9090) - Sistema de monitoramento e coleta de métricas de todos os serviços.
+- _Grafana_ (Port 3000) - Plataforma de visualização e análise de métricas com dashboards pré-configurados.
+- _OpenTelemetry_ - Framework de observabilidade para tracing distribuído integrado aos serviços.
 
 Repositório Spring Cloud Config: https://github.com/GuilhermeVSam/config_repo_cs
+
+## Observabilidade e Monitoramento
+
+O projeto implementa uma stack completa de observabilidade utilizando:
+
+### Prometheus
+- **URL:** http://localhost:9090
+- **Função:** Coleta métricas de todos os microserviços a cada 15 segundos
+- **Endpoints monitorados:** 
+  - `/actuator/prometheus` em cada serviço (8081, 8082, 8083, 9000)
+  - Métricas incluem: requisições HTTP, latência, uso de CPU, memória JVM, threads, etc.
+
+### Grafana
+- **URL:** http://localhost:3000
+- **Login:** `admin` / `admin`
+- **Dashboard pré-configurado** com painéis mostrando:
+  - Taxa de requisições HTTP por segundo
+  - Latência P95 (percentil 95)
+  - Uso de CPU
+  - Memória JVM (heap)
+- **Datasource:** Prometheus configurado automaticamente
+
+### OpenTelemetry
+- Integração via `micrometer-tracing-bridge-otel`
+- Exportador OTLP configurado para tracing distribuído
+- Sampling de 100% habilitado em ambiente de desenvolvimento
+
+### Acessando Métricas
+
+**Endpoints do Actuator disponíveis em cada serviço:**
+- `http://localhost:8081/actuator/health` - Health check (Turma)
+- `http://localhost:8082/actuator/health` - Health check (Usuario)
+- `http://localhost:8083/actuator/health` - Health check (Reserva)
+- `http://localhost:9000/actuator/health` - Health check (Gateway)
+- `http://localhost:8081/actuator/prometheus` - Métricas Prometheus
+- `http://localhost:8081/actuator/metrics` - Lista de métricas disponíveis
+
+**Exemplos de consultas PromQL no Prometheus:**
+```promql
+# Taxa de requisições HTTP
+rate(http_server_requests_seconds_count[1m])
+
+# Latência P95
+histogram_quantile(0.95, rate(http_server_requests_seconds_bucket[5m]))
+
+# Memória JVM usada
+jvm_memory_used_bytes{area="heap"}
+```
+
 
 ## Modelagem lógica BD
 
