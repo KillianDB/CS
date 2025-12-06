@@ -1,6 +1,52 @@
-version: '3.8'
+version: "3.8"
 
 services:
+  cloudserver:
+    build: ./cloudserver
+    container_name: cloudserver
+    ports:
+      - "8888:8888"
+    networks:
+      - microservices-network
+    volumes:
+      - ../config_repo:/app/config-repo
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8888/actuator/health",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
+  eurekaserver:
+    build: ./eurekaserver
+    container_name: eurekaserver
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8761/actuator/health",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
   turma-service:
     build:
       context: ./turma
@@ -16,14 +62,15 @@ services:
       - SPRING_DATASOURCE_PASSWORD=
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - SERVER_PORT=8081
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloudserver:8888/
     networks:
       - microservices-network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/turmas/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+    depends_on:
+      cloudserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     restart: unless-stopped
 
   usuario-service:
@@ -41,14 +88,15 @@ services:
       - SPRING_DATASOURCE_PASSWORD=
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - SERVER_PORT=8082
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloudserver:8888/
     networks:
       - microservices-network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/usuarios/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+    depends_on:
+      cloudserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     restart: unless-stopped
 
   reserva-service:
@@ -66,25 +114,34 @@ services:
       - SPRING_DATASOURCE_PASSWORD=
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - SERVER_PORT=8083
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloudserver:8888/
     networks:
       - microservices-network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/reservas/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+    depends_on:
+      cloudserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     restart: unless-stopped
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "9000:9000"
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://cloudserver:8888/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
+    depends_on:
+      cloudserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    networks:
+      - microservices-network
 
 networks:
   microservices-network:
     driver: bridge
     name: cs-microservices-network
-
-volumes:
-  turma-data:
-    name: turma-data
-  usuario-data:
-    name: usuario-data
-  reserva-data:
-    name: reserva-data

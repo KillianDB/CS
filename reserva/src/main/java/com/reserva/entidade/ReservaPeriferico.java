@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "reservas_salas")
 public class ReservaPeriferico extends Reserva {
 
     @Column(name = "codigo_professor", nullable = false)

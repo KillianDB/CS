@@ -1,0 +1,31 @@
+spring:
+  config:
+    name: application,turma-service
+    import: optional:configserver:http://cloudserver:8888/
+  application:
+    name: turma-service
+
+eureka:
+  client:
+    enabled: true # Explicitly enable
+    service-url:
+      defaultZone: http://eurekaserver:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+    healthcheck:
+      enabled: true # Enable health checks
+    # Critical: Faster registration for testing
+    initial-instance-info-replication-interval-seconds: 5
+    registry-fetch-interval-seconds: 5
+
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+    hostname: ${spring.cloud.client.hostname:localhost}
+    # Critical: Faster heartbeat for testing
+    lease-renewal-interval-in-seconds: 5 # Default is 30 - too slow for testing
+    lease-expiration-duration-in-seconds: 10 # Default is 90 - too slow for testing
+    # Required for health checks
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+    health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health

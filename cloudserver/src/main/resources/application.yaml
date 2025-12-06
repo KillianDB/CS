@@ -1,0 +1,18 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: cloudserver
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${GIT_REPO_URI:https://github.com/GuilhermeVSam/config_repo_cs.git}
+          clone-on-start: false
+          force-pull: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}

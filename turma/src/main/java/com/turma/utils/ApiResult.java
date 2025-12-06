@@ -3,21 +3,21 @@ package com.turma.utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
+public class ApiResult<T> {
     private T data;
     private String error;
 
-    private ApiResponse(T data, String error) {
+    private ApiResult(T data, String error) {
         this.data = data;
         this.error = error;
     }
 
-    public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(data, null);
+    public static <T> ApiResult<T> success(T data) {
+        return new ApiResult<>(data, null);
     }
 
-    public static <T> ApiResponse<T> error(String message) {
-        return new ApiResponse<>(null, message);
+    public static <T> ApiResult<T> error(String message) {
+        return new ApiResult<>(null, message);
     }
 
     public boolean isSuccess() {

@@ -1,0 +1,145 @@
+.
+├── cloudserver
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── com
+│   │   │   │       └── guilherme
+│   │   │   │           └── cloudserver
+│   │   │   └── resources
+│   │   └── test
+│   │       └── java
+│   │           └── com
+│   │               └── guilherme
+│   │                   └── cloudserver
+│   └── target
+│       ├── classes
+│       │   └── com
+│       │       └── guilherme
+│       │           └── cloudserver
+│       ├── generated-sources
+│       │   └── annotations
+│       ├── generated-test-sources
+│       │   └── test-annotations
+│       ├── maven-archiver
+│       ├── maven-status
+│       │   └── maven-compiler-plugin
+│       │       ├── compile
+│       │       │   └── default-compile
+│       │       └── testCompile
+│       │           └── default-testCompile
+│       └── test-classes
+│           └── com
+│               └── guilherme
+│                   └── cloudserver
+├── eurekaserver
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── com
+│   │   │   │       └── guilherme
+│   │   │   │           └── eurekaserver
+│   │   │   └── resources
+│   │   └── test
+│   │       └── java
+│   │           └── com
+│   │               └── guilherme
+│   │                   └── eurekaserver
+│   └── target
+│       ├── classes
+│       │   └── com
+│       │       └── guilherme
+│       │           └── eurekaserver
+│       ├── generated-sources
+│       │   └── annotations
+│       ├── generated-test-sources
+│       │   └── test-annotations
+│       ├── maven-archiver
+│       ├── maven-status
+│       │   └── maven-compiler-plugin
+│       │       ├── compile
+│       │       │   └── default-compile
+│       │       └── testCompile
+│       │           └── default-testCompile
+│       └── test-classes
+│           └── com
+│               └── guilherme
+│                   └── eurekaserver
+├── gateway
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── com
+│   │   │   │       └── guilherme
+│   │   │   │           └── gateway
+│   │   │   └── resources
+│   │   └── test
+│   │       └── java
+│   │           └── com
+│   │               └── guilherme
+│   │                   └── gateway
+│   └── target
+│       ├── classes
+│       │   └── com
+│       │       └── guilherme
+│       │           └── gateway
+│       └── test-classes
+│           └── com
+│               └── guilherme
+│                   └── gateway
+├── reserva
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── com
+│   │   │   │       └── reserva
+│   │   │   │           ├── entidade
+│   │   │   │           ├── repository
+│   │   │   │           └── utils
+│   │   │   │               └── config
+│   │   │   └── resources
+│   │   └── test
+│   │       └── java
+│   │           └── com
+│   │               └── reserva
+│   │                   └── entidade
+│   └── target
+│       └── classes
+├── turma
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── com
+│   │   │   │       └── turma
+│   │   │   │           ├── dto
+│   │   │   │           ├── entidade
+│   │   │   │           ├── repository
+│   │   │   │           ├── service
+│   │   │   │           └── utils
+│   │   │   └── resources
+│   │   └── test
+│   │       └── java
+│   │           └── com
+│   │               └── turma
+│   │                   └── entidade
+│   └── target
+│       └── classes
+└── usuario
+    ├── src
+    │   ├── main
+    │   │   ├── java
+    │   │   │   └── com
+    │   │   │       └── usuario
+    │   │   │           ├── entidade
+    │   │   │           ├── repository
+    │   │   │           └── utils
+    │   │   └── resources
+    │   └── test
+    │       └── java
+    │           └── com
+    │               └── usuario
+    │                   └── entidade
+    └── target
+        └── classes
+
+143 directories
