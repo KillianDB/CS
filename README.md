@@ -83,6 +83,19 @@ docker run -p 8083:8083 reserva-service
 
 ## **APIs Disponíveis**
 
+### GATEWAY (porta 9000)
+
+_Base URL:_ `http://localhost:9000/nome-do-servico`
+
+Nomes dos servicos disponíveis: [turma-service, reserva-service, usuario-service]
+
+Qualquer rota listada abaixo pode ser mudada para a porta 9000, exemplo:
+
+`http:localhost:9000/turma-service/turmas/health`
+`http:localhost:9000/turma-service/disciplinas/health`
+`http:localhost:9000/reserva-service/reservas/health`
+`http:localhost:9000/usuario-service/usuarios/health`
+
 ### Turma Service (porta 8081)
 
 _Base URL:_ `http://localhost:8081/turmas`
