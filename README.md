@@ -8,13 +8,21 @@ Este projeto consiste em três microsserviços Spring Boot:
 - _Usuario Service_ - Gerencia estudantes, professores e administradores (porta 8082)
 - _Reserva Service_ - Gerencia reservas de salas e de perifericos (porta 8083)
 
-Ambos os microsserviços utilizam:
+Todos os microsserviços utilizam:
 
 - Java 17
-- Spring Boot 3.1.5
+- Spring Boot 3.4.8
 - Spring Data JPA
 - Banco de dados H2 (em memória)
 - Docker para containerização
+
+Além dos microserviços, o projeto também conta com algumas tecnologias:
+
+- _API Gateway_ - (explicação)
+- _Spring Cloud Server_ - (explicação)
+- _Eureka_ - (explicação)
+
+Repositório Spring Cloud Config: https://github.com/GuilhermeVSam/config_repo_cs
 
 ## Modelagem lógica BD
 
