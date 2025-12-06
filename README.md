@@ -18,9 +18,9 @@ Todos os microsserviços utilizam:
 
 Além dos microserviços, o projeto também conta com algumas tecnologias:
 
-- _API Gateway_ - (explicação)
-- _Spring Cloud Server_ - (explicação)
-- _Eureka_ - (explicação)
+- _API Gateway_ - Ponto único de entrada que roteia requisições para os microserviços.
+- _Spring Cloud Server_ - Centraliza as configurações de todos os serviços em um único lugar.
+- _Eureka_ - Registro de serviços que permite descobrir e se comunicar com microserviços dinamicamente.
 
 Repositório Spring Cloud Config: https://github.com/GuilhermeVSam/config_repo_cs
 
